@@ -4,39 +4,182 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kas Kelas Kita</title>
+  <title>KasKelas — Dashboard</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
-  <main class="container">
-    <header class="header">
-      <h1>Kas Kelas Kita 💙</h1>
-      <p>Transparan! Semua bisa liat aktivitas keuangan kelas kita.</p>
-    </header>
+  <div class="app">
 
-    <section class="card">
-      <h2>Saldo Kas Saat Ini</h2>
-      <p class="saldo" id="saldo">Rp0</p>
-      <p class="note">
-        Saldo akan ditampilkan setelah data kas tersedia.
-      </p>
-    </section>
+    <aside class="sidebar">
+      <a class="brand" href="#dashboard">
+        <span class="brand-icon">K</span>
+        <span>KasKelas<span class="brand-dot">.</span></span>
+      </a>
 
-    <section class="card">
-      <h2>Informasi Kas</h2>
-      <p>Periode: Belum dimulai</p>
-      <p>Status: Website sedang disiapkan</p>
-    </section>
+      <p class="nav-label">MENU UTAMA</p>
 
-    <section class="card">
-      <h2>Selamat Datang!</h2>
-      <p class="note">
-        Website ini akan digunakan untuk melihat
-        pembayaran, pemasukan, pengeluaran,
-        dan laporan kas kelas.
-      </p>
-    </section>
-  </main>
+      <nav class="navigation">
+        <a class="nav-item active" href="#dashboard">
+          <span class="nav-icon">⌂</span> Dashboard
+        </a>
+        <a class="nav-item" href="#siswa">
+          <span class="nav-icon">♙</span> Data Siswa
+        </a>
+        <a class="nav-item" href="#pembayaran">
+          <span class="nav-icon">▤</span> Pembayaran
+        </a>
+        <a class="nav-item" href="#pengeluaran">
+          <span class="nav-icon">↗</span> Pengeluaran
+        </a>
+        <a class="nav-item" href="#laporan">
+          <span class="nav-icon">▥</span> Laporan
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="class-badge">I26C</div>
+        <p>Pengelolaan kas kelas yang transparan.</p>
+      </div>
+    </aside>
+
+    <main class="main-content" id="dashboard">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">KEUANGAN KELAS</p>
+          <h1>Dashboard</h1>
+          <p class="subtitle">Pantau keuangan kelas.</p>
+        </div>
+        <div class="profile">
+          <div class="avatar">K</div>
+          <div>
+            <strong>Kas Kelas</strong>
+            <span>Mode pengunjung</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="summary-grid">
+        <article class="summary-card">
+          <div class="card-top">
+            <span>Total Saldo</span>
+            <span class="metric-icon blue">Rp</span>
+          </div>
+          <h2 id="saldo">Rp0</h2>
+          <p>Saldo kas saat ini</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="card-top">
+            <span>Total Pemasukan</span>
+            <span class="metric-icon light-blue">↓</span>
+          </div>
+          <h2 id="pemasukan">Rp0</h2>
+          <p>Akumulasi uang masuk</p>
+        </article>
+
+        <article class="summary-card">
+          <div class="card-top">
+            <span>Total Pengeluaran</span>
+            <span class="metric-icon pale">↑</span>
+          </div>
+          <h2 id="pengeluaran">Rp0</h2>
+          <p>Akumulasi uang keluar</p>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel payment-panel" id="pembayaran">
+          <div class="panel-heading">
+            <div>
+              <h3>Status Pembayaran</h3>
+              <p>Ringkasan kas minggu ini</p>
+            </div>
+            <span class="week-label">Minggu ini</span>
+          </div>
+
+          <div class="payment-summary">
+            <div class="payment-number">
+              <span class="status-dot paid-dot"></span>
+              <div>
+                <strong id="sudah-bayar">0 siswa</strong>
+                <span>Sudah bayar</span>
+              </div>
+            </div>
+            <div class="payment-number">
+              <span class="status-dot unpaid-dot"></span>
+              <div>
+                <strong id="belum-bayar">0 siswa</strong>
+                <span>Belum bayar</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-bayar"></div>
+          </div>
+          <p class="progress-caption" id="persentase-bayar">
+            Belum ada data pembayaran
+          </p>
+        </article>
+
+        <article class="panel" id="laporan">
+          <div class="panel-heading">
+            <div>
+              <h3>Informasi Kas</h3>
+              <p>Periode pembayaran aktif</p>
+            </div>
+            <span class="calendar-icon">▦</span>
+          </div>
+          <div class="info-row">
+            <span>Periode</span>
+            <strong id="periode">Belum dimulai</strong>
+          </div>
+          <div class="info-row">
+            <span>Jumlah siswa</span>
+            <strong id="jumlah-siswa">0 siswa</strong>
+          </div>
+          <div class="info-row">
+            <span>Status data</span>
+            <span class="status-badge">Menunggu data</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel transaction-panel" id="pengeluaran">
+        <div class="panel-heading">
+          <div>
+            <h3>Transaksi Terbaru</h3>
+            <p>Riwayat pemasukan dan pengeluaran</p>
+          </div>
+          <span class="read-only">Pratinjau</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>TRANSAKSI</th>
+                <th>TANGGAL</th>
+                <th>KATEGORI</th>
+                <th>NOMINAL</th>
+              </tr>
+            </thead>
+            <tbody id="daftar-transaksi">
+              <tr>
+                <td colspan="4" class="empty-state">
+                  Belum ada transaksi untuk ditampilkan.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="footer">
+        KasKelas · Pengelolaan keuangan kelas
+      </footer>
+    </main>
+  </div>
 </body>
 </html>
