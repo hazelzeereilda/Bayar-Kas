@@ -542,98 +542,289 @@ td {
   }
 }
 
-/* Perbaikan tampilan form Data Siswa */
-.students-panel .student-form {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto auto;
-  align-items: end;
-  gap: 16px;
-  margin: 24px 0;
+
+/* =====================================
+   DATA SISWA - BAYAR KAS
+   ===================================== */
+
+#siswa {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 24px;
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e3e9f5;
+  border-radius: 16px;
+  color: #091540;
+  box-shadow: 0 4px 18px rgba(9, 21, 64, 0.04);
 }
 
-.students-panel .student-input {
+/* Judul dan jumlah siswa */
+#siswa .panel-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+#siswa .panel-heading h3 {
+  margin: 0 0 6px;
+  color: #091540;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#siswa .panel-heading p {
+  margin: 0;
+  color: #71809f;
+  font-size: 13px;
+}
+
+#siswa #total-siswa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 13px;
+  border-radius: 9px;
+  background: #edf0ff;
+  color: #1b2cc1;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Form input NIM, nama, kelas */
+#siswa .student-form {
+  display: grid !important;
+  grid-template-columns:
+    minmax(130px, 0.8fr)
+    minmax(190px, 1.4fr)
+    minmax(130px, 0.8fr);
+  align-items: end;
+  gap: 18px;
+  margin: 0 0 24px;
+}
+
+#siswa .student-input {
   display: flex !important;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
   min-width: 0;
 }
 
-.students-panel .student-input label {
+#siswa .student-input label {
+  display: block;
   color: #091540;
   font-size: 13px;
   font-weight: 600;
 }
 
-.students-panel .student-input input,
-.students-panel .student-search input {
+#siswa .student-input input {
+  display: block;
   width: 100%;
-  min-height: 42px;
+  min-width: 0;
+  height: 44px;
   box-sizing: border-box;
-  padding: 10px 12px;
+  padding: 0 13px;
   border: 1px solid #dce4f5;
   border-radius: 9px;
-  background: #fff;
-  color: #17213d;
-  font: inherit;
+  background: #fdfdff;
+  color: #091540;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.students-panel .student-button {
-  min-height: 42px;
-  padding: 0 18px;
-  border: 0;
+#siswa .student-input input::placeholder,
+#siswa .student-search input::placeholder {
+  color: #9aa6bf;
+}
+
+#siswa .student-input input:focus,
+#siswa .student-search input:focus {
+  border-color: #7692ff;
+  box-shadow: 0 0 0 3px rgba(118, 146, 255, 0.16);
+}
+
+/* Tombol form */
+#siswa .student-button,
+#siswa .student-cancel {
+  min-height: 44px;
+  box-sizing: border-box;
+  padding: 0 17px;
   border-radius: 9px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+#siswa .student-button {
+  grid-column: 1 / 2;
+  width: fit-content;
+  border: 1px solid #1b2cc1;
   background: #1b2cc1;
-  color: white;
+  color: #ffffff;
+}
+
+#siswa .student-button:hover {
+  background: #091540;
+  border-color: #091540;
+}
+
+#siswa .student-cancel {
+  grid-column: 2 / 3;
+  width: fit-content;
+  border: 1px solid #dce4f5;
+  background: #edf1ff;
+  color: #091540;
+}
+
+#siswa .student-cancel:hover {
+  background: #dfe6ff;
+}
+
+#siswa .student-cancel[hidden] {
+  display: none !important;
+}
+
+/* Pencarian siswa */
+#siswa .student-search {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 0 18px;
+}
+
+#siswa .student-search input {
+  display: block;
+  width: 100%;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border: 1px solid #dce4f5;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #091540;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+
+/* Tabel data siswa */
+#siswa .table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #e8edf7;
+  border-radius: 11px;
+}
+
+#siswa table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+#siswa thead {
+  background: #f2f5ff;
+}
+
+#siswa th {
+  padding: 15px 16px;
+  color: #647397;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+#siswa td {
+  padding: 16px;
+  border-bottom: 1px solid #e8edf7;
+  color: #263452;
+  font-size: 13px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+#siswa tbody tr:last-child td {
+  border-bottom: none;
+}
+
+#siswa tbody tr:hover {
+  background: #fafbff;
+}
+
+#siswa .empty-state {
+  padding: 30px 16px;
+  color: #8190ad;
+  text-align: center;
+}
+
+/* Tombol aksi */
+#siswa .student-actions {
+  white-space: nowrap;
+}
+
+#siswa .student-actions button {
+  margin-right: 6px;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
 }
 
-.students-panel .student-button:hover {
-  background: #091540;
+#siswa .action-edit {
+  background: #e8edff;
+  color: #1b2cc1;
 }
 
-.students-panel .student-cancel {
-  min-height: 42px;
-  padding: 0 14px;
-  border: 1px solid #dce4f5;
-  border-radius: 9px;
-  background: #edf1ff;
-  color: #091540;
-  cursor: pointer;
+#siswa .action-edit:hover {
+  background: #d8e1ff;
 }
 
-.students-panel .student-search {
-  width: 100%;
-  max-width: 380px;
-  margin: 20px 0;
+#siswa .action-delete {
+  background: #fff0f0;
+  color: #c62828;
 }
 
+#siswa .action-delete:hover {
+  background: #ffe0e0;
+}
+
+/* Tampilan tablet dan HP */
 @media (max-width: 760px) {
-  .students-panel .student-form {
-    grid-template-columns: 1fr 1fr;
+  #siswa {
+    padding: 17px;
   }
 
-  .students-panel .student-input {
-    grid-column: span 2;
-  }
-}
-
-/* Form Data Siswa: NIM, Nama, Kelas */
-.students-panel .student-form {
-  grid-template-columns:
-    minmax(120px, 0.8fr)
-    minmax(180px, 1.5fr)
-    minmax(120px, 0.8fr)
-    auto
-    auto;
-}
-
-@media (max-width: 900px) {
-  .students-panel .student-form {
-    grid-template-columns: 1fr 1fr;
+  #siswa .student-form {
+    grid-template-columns: 1fr;
+    gap: 15px;
   }
 
-  .students-panel .student-input {
-    grid-column: span 2;
+  #siswa .student-input {
+    grid-column: 1 / -1;
+  }
+
+  #siswa .student-button,
+  #siswa .student-cancel {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  #siswa .student-search {
+    max-width: none;
+  }
+
+  #siswa .panel-heading h3 {
+    font-size: 18px;
   }
 }
