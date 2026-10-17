@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -184,66 +183,86 @@
           <span class="read-only" id="total-siswa">0 siswa</span>
         </div>
 
-        <form id="form-siswa" class="student-form">
-          <input type="hidden" id="id-siswa">
-      
-          <div class="student-input">
-            <label for="nama-siswa">Nama siswa</label>
+        <section class="panel students-panel" id="siswa">
+          <div class="panel-heading">
+            <div>
+              <h3>Data Siswa</h3>
+              <p>Kelola daftar siswa kelas</p>
+            </div>
+            <span class="read-only" id="total-siswa">0 siswa</span>
+          </div>
+
+          <form id="form-siswa" class="student-form">
+            <input type="hidden" id="id-siswa">
+        
+            <div class="student-input">
+              <label for="nim-siswa">NIM</label>
+              <input
+                type="text"
+                id="nim-siswa"
+                placeholder="Masukkan NIM"
+                required
+              >
+            </div>
+        
+            <div class="student-input">
+              <label for="nama-siswa">Nama siswa</label>
+              <input
+                type="text"
+                id="nama-siswa"
+                placeholder="Masukkan nama siswa"
+                required
+              >
+            </div>
+        
+            <div class="student-input">
+              <label for="kelas-siswa">Kelas</label>
+              <input
+                type="text"
+                id="kelas-siswa"
+                placeholder="Contoh: I26C"
+                required
+              >
+            </div>
+        
+            <button type="submit" class="student-button" id="tombol-simpan">
+              Tambah Siswa
+            </button>
+        
+            <button type="button" class="student-cancel" id="batal-edit" hidden>
+              Batal
+            </button>
+          </form>
+        
+          <div class="student-search">
             <input
-              type="text"
-              id="nama-siswa"
-              placeholder="Masukkan nama siswa"
-              required
+              type="search"
+              id="cari-siswa"
+              placeholder="Cari NIM, nama, atau kelas..."
             >
           </div>
-      
-          <div class="student-input">
-            <label for="kelas-siswa">Kelas</label>
-            <input
-              type="text"
-              id="kelas-siswa"
-              placeholder="Contoh: I26C"
-              required
-            >
+        
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>NO.</th>
+                  <th>NIM</th>
+                  <th>NAMA SISWA</th>
+                  <th>KELAS</th>
+                  <th>AKSI</th>
+                </tr>
+              </thead>
+              <tbody id="daftar-siswa">
+                <tr>
+                  <td colspan="5" class="empty-state">
+                    Belum ada data siswa.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-      
-          <button type="submit" class="student-button" id="tombol-simpan">
-            Tambah Siswa
-          </button>
-      
-          <button type="button" class="student-cancel" id="batal-edit" hidden>
-            Batal
-          </button>
-        </form>
-      
-        <div class="student-search">
-          <input
-            type="search"
-            id="cari-siswa"
-            placeholder="Cari nama atau kelas siswa..."
-          >
-        </div>
-      
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>NO.</th>
-                <th>NAMA SISWA</th>
-                <th>KELAS</th>
-                <th>AKSI</th>
-              </tr>
-            </thead>
-            <tbody id="daftar-siswa">
-              <tr>
-                <td colspan="4" class="empty-state">
-                  Belum ada data siswa.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+        </section>
       <footer class="footer">
         KasKelas · Pengelolaan keuangan kelas
       </footer>
