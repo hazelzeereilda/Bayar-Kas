@@ -1,5 +1,6 @@
 const formSiswa = document.getElementById("form-siswa");
 const inputId = document.getElementById("id-siswa");
+const inputNim = document.getElementById("nim-siswa");
 const inputNama = document.getElementById("nama-siswa");
 const inputKelas = document.getElementById("kelas-siswa");
 const inputCari = document.getElementById("cari-siswa");
@@ -12,18 +13,18 @@ const tombolBatal = document.getElementById("batal-edit");
 let siswa = [];
 
 try {
-  const dataTersimpan = JSON.parse(
-    localStorage.getItem("bayarKasSiswa") || "[]"
-  );
+  const data = JSON.parse(localStorage.getItem("bayarKasSiswa") || "[]");
 
-  if (Array.isArray(dataTersimpan)) {
-    siswa = dataTersimpan.filter(
-      item =>
-        item &&
-        typeof item.id === "string" &&
-        typeof item.nama === "string" &&
-        typeof item.kelas === "string"
-    );
+  if (Array.isArray(data)) {
+    siswa = data.filter(item =>
+      item &&
+      typeof item.id === "string" &&
+      typeof item.nama === "string" &&
+      typeof item.kelas === "string"
+    ).map(item => ({
+      ...item,
+      nim: typeof item.nim === "string" ? item.nim : ""
+    }));
   }
 } catch (error) {
   siswa = [];
@@ -37,6 +38,7 @@ function tampilkanSiswa() {
   const kataKunci = inputCari.value.trim().toLowerCase();
 
   const hasil = siswa.filter(item =>
+    item.nim.toLowerCase().includes(kataKunci) ||
     item.nama.toLowerCase().includes(kataKunci) ||
     item.kelas.toLowerCase().includes(kataKunci)
   );
@@ -47,7 +49,7 @@ function tampilkanSiswa() {
     const baris = document.createElement("tr");
     const kolom = document.createElement("td");
 
-    kolom.colSpan = 4;
+    kolom.colSpan = 5;
     kolom.className = "empty-state";
     kolom.textContent = siswa.length
       ? "Data siswa tidak ditemukan."
@@ -59,14 +61,18 @@ function tampilkanSiswa() {
     hasil.forEach((item, index) => {
       const baris = document.createElement("tr");
 
-      const nomor = document.createElement("td");
-      nomor.textContent = index + 1;
+      const nilai = [
+        index + 1,
+        item.nim || "—",
+        item.nama,
+        item.kelas
+      ];
 
-      const nama = document.createElement("td");
-      nama.textContent = item.nama;
-
-      const kelas = document.createElement("td");
-      kelas.textContent = item.kelas;
+      nilai.forEach(teks => {
+        const kolom = document.createElement("td");
+        kolom.textContent = teks;
+        baris.appendChild(kolom);
+      });
 
       const aksi = document.createElement("td");
       aksi.className = "student-actions";
@@ -84,7 +90,7 @@ function tampilkanSiswa() {
       tombolHapus.addEventListener("click", () => hapusSiswa(item.id));
 
       aksi.append(tombolEdit, tombolHapus);
-      baris.append(nomor, nama, kelas, aksi);
+      baris.appendChild(aksi);
       daftarSiswa.appendChild(baris);
     });
   }
@@ -99,11 +105,22 @@ function tampilkanSiswa() {
 formSiswa.addEventListener("submit", event => {
   event.preventDefault();
 
+  const nim = inputNim.value.trim();
   const nama = inputNama.value.trim();
   const kelas = inputKelas.value.trim();
 
-  if (!nama || !kelas) {
-    alert("Nama dan kelas siswa wajib diisi.");
+  if (!nim || !nama || !kelas) {
+    alert("NIM, nama, dan kelas wajib diisi.");
+    return;
+  }
+
+  const nimSudahAda = siswa.some(item =>
+    item.nim.toLowerCase() === nim.toLowerCase() &&
+    item.id !== inputId.value
+  );
+
+  if (nimSudahAda) {
+    alert("NIM tersebut sudah terdaftar.");
     return;
   }
 
@@ -111,12 +128,12 @@ formSiswa.addEventListener("submit", event => {
     const index = siswa.findIndex(item => item.id === inputId.value);
 
     if (index !== -1) {
-      siswa[index].nama = nama;
-      siswa[index].kelas = kelas;
+      siswa[index] = { ...siswa[index], nim, nama, kelas };
     }
   } else {
     siswa.push({
       id: crypto.randomUUID(),
+      nim,
       nama,
       kelas
     });
@@ -128,26 +145,28 @@ formSiswa.addEventListener("submit", event => {
 });
 
 function editSiswa(id) {
-  const item = siswa.find(siswaItem => siswaItem.id === id);
+  const item = siswa.find(s => s.id === id);
   if (!item) return;
 
   inputId.value = item.id;
+  inputNim.value = item.nim;
   inputNama.value = item.nama;
   inputKelas.value = item.kelas;
+
   tombolSimpan.textContent = "Simpan Perubahan";
   tombolBatal.hidden = false;
 
   formSiswa.scrollIntoView({ behavior: "smooth", block: "center" });
-  inputNama.focus();
+  inputNim.focus();
 }
 
 function hapusSiswa(id) {
-  const item = siswa.find(siswaItem => siswaItem.id === id);
+  const item = siswa.find(s => s.id === id);
   if (!item) return;
 
   if (!confirm(`Yakin ingin menghapus data ${item.nama}?`)) return;
 
-  siswa = siswa.filter(siswaItem => siswaItem.id !== id);
+  siswa = siswa.filter(s => s.id !== id);
 
   simpanData();
   resetForm();
