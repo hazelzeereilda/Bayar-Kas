@@ -542,7 +542,82 @@ td {
   }
 }
 
-/* Perbaikan form Data Siswa */
+/* Perbaikan tampilan form Data Siswa */
+.students-panel .student-form {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto auto;
+  align-items: end;
+  gap: 16px;
+  margin: 24px 0;
+}
+
+.students-panel .student-input {
+  display: flex !important;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.students-panel .student-input label {
+  color: #091540;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.students-panel .student-input input,
+.students-panel .student-search input {
+  width: 100%;
+  min-height: 42px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid #dce4f5;
+  border-radius: 9px;
+  background: #fff;
+  color: #17213d;
+  font: inherit;
+}
+
+.students-panel .student-button {
+  min-height: 42px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 9px;
+  background: #1b2cc1;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.students-panel .student-button:hover {
+  background: #091540;
+}
+
+.students-panel .student-cancel {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid #dce4f5;
+  border-radius: 9px;
+  background: #edf1ff;
+  color: #091540;
+  cursor: pointer;
+}
+
+.students-panel .student-search {
+  width: 100%;
+  max-width: 380px;
+  margin: 20px 0;
+}
+
+@media (max-width: 760px) {
+  .students-panel .student-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .students-panel .student-input {
+    grid-column: span 2;
+  }
+}
+
 #siswa .student-form {
   display: grid !important;
   grid-template-columns: 0.9fr 1.5fr 0.9fr auto auto;
