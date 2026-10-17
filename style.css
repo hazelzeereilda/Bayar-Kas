@@ -542,137 +542,78 @@ td {
   }
 }
 
-/* DATA SISWA */
-.students-panel {
-  margin-top: 24px;
-}
-
-.student-form {
-  display: flex;
-  flex-wrap: wrap;
+/* Perbaikan tampilan form Data Siswa */
+.students-panel .student-form {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto auto;
   align-items: end;
-  gap: 14px;
-  margin: 22px 0;
+  gap: 16px;
+  margin: 24px 0;
 }
 
-.student-input {
-  display: flex;
-  flex: 1 1 200px;
+.students-panel .student-input {
+  display: flex !important;
   flex-direction: column;
   gap: 8px;
+  min-width: 0;
 }
 
-.student-input label {
+.students-panel .student-input label {
+  color: #091540;
   font-size: 13px;
   font-weight: 600;
-  color: #091540;
 }
 
-.student-input input,
-.student-search input {
+.students-panel .student-input input,
+.students-panel .student-search input {
   width: 100%;
+  min-height: 42px;
   box-sizing: border-box;
-  padding: 12px 14px;
+  padding: 10px 12px;
   border: 1px solid #dce4f5;
   border-radius: 9px;
   background: #fff;
+  color: #17213d;
   font: inherit;
-  outline: none;
 }
 
-.student-input input:focus,
-.student-search input:focus {
-  border-color: #7692ff;
-  box-shadow: 0 0 0 3px #7692ff25;
-}
-
-.student-button,
-.student-cancel,
-.student-actions button {
+.students-panel .student-button {
+  min-height: 42px;
+  padding: 0 18px;
   border: 0;
-  border-radius: 8px;
-  padding: 11px 15px;
-  font: inherit;
-  font-size: 13px;
+  border-radius: 9px;
+  background: #1b2cc1;
+  color: white;
   font-weight: 600;
   cursor: pointer;
 }
 
-.student-button {
-  background: #1b2cc1;
-  color: #fff;
-}
-
-.student-button:hover {
+.students-panel .student-button:hover {
   background: #091540;
 }
 
-.student-cancel {
+.students-panel .student-cancel {
+  min-height: 42px;
+  padding: 0 14px;
+  border: 1px solid #dce4f5;
+  border-radius: 9px;
   background: #edf1ff;
   color: #091540;
+  cursor: pointer;
 }
 
-.student-search {
-  margin-bottom: 18px;
-  max-width: 380px;
-}
-
-.student-actions {
-  white-space: nowrap;
-}
-
-.student-actions button {
-  margin: 3px;
-}
-
-.action-edit {
-  background: #e6edff;
-  color: #1b2cc1;
-}
-
-.action-delete {
-  background: #ffe8e8;
-  color: #c62828;
-}
-
-.students-panel table {
+.students-panel .student-search {
   width: 100%;
-  border-collapse: collapse;
+  max-width: 380px;
+  margin: 20px 0;
 }
 
-.students-panel th,
-.students-panel td {
-  padding: 14px 12px;
-  text-align: left;
-  border-bottom: 1px solid #edf0f7;
-}
-
-.students-panel th {
-  color: #64708a;
-  font-size: 12px;
-}
-
-.students-panel td {
-  font-size: 14px;
-}
-
-.student-cancel[hidden] {
-  display: none;
-}
-
-@media (max-width: 600px) {
-  .student-form {
-    flex-direction: column;
-    align-items: stretch;
+@media (max-width: 760px) {
+  .students-panel .student-form {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .student-input {
-    flex-basis: auto;
-  }
-
-  .students-panel th,
-  .students-panel td {
-    padding: 10px 7px;
-    font-size: 12px;
+  .students-panel .student-input {
+    grid-column: span 2;
   }
 }
