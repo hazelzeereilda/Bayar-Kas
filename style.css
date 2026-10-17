@@ -541,3 +541,138 @@ td {
     gap: 10px;
   }
 }
+
+/* DATA SISWA */
+.students-panel {
+  margin-top: 24px;
+}
+
+.student-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.student-input {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.student-input label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #091540;
+}
+
+.student-input input,
+.student-search input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  border: 1px solid #dce4f5;
+  border-radius: 9px;
+  background: #fff;
+  font: inherit;
+  outline: none;
+}
+
+.student-input input:focus,
+.student-search input:focus {
+  border-color: #7692ff;
+  box-shadow: 0 0 0 3px #7692ff25;
+}
+
+.student-button,
+.student-cancel,
+.student-actions button {
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 15px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.student-button {
+  background: #1b2cc1;
+  color: #fff;
+}
+
+.student-button:hover {
+  background: #091540;
+}
+
+.student-cancel {
+  background: #edf1ff;
+  color: #091540;
+}
+
+.student-search {
+  margin-bottom: 18px;
+  max-width: 380px;
+}
+
+.student-actions {
+  white-space: nowrap;
+}
+
+.student-actions button {
+  margin: 3px;
+}
+
+.action-edit {
+  background: #e6edff;
+  color: #1b2cc1;
+}
+
+.action-delete {
+  background: #ffe8e8;
+  color: #c62828;
+}
+
+.students-panel table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.students-panel th,
+.students-panel td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid #edf0f7;
+}
+
+.students-panel th {
+  color: #64708a;
+  font-size: 12px;
+}
+
+.students-panel td {
+  font-size: 14px;
+}
+
+.student-cancel[hidden] {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .student-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .student-input {
+    flex-basis: auto;
+  }
+
+  .students-panel th,
+  .students-panel td {
+    padding: 10px 7px;
+    font-size: 12px;
+  }
+}
