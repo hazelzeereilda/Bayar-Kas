@@ -1,8 +1,3 @@
-// ========================================
-// KASKELAS - DATA SISWA & PEMBAYARAN MINGGUAN
-// ========================================
-
-// ---------- ELEMEN DATA SISWA ----------
 const formSiswa = document.getElementById("form-siswa");
 const inputId = document.getElementById("id-siswa");
 const inputNim = document.getElementById("nim-siswa");
@@ -15,124 +10,32 @@ const jumlahSiswa = document.getElementById("jumlah-siswa");
 const tombolSimpan = document.getElementById("tombol-simpan");
 const tombolBatal = document.getElementById("batal-edit");
 
-// ---------- ELEMEN PEMBAYARAN ----------
-const pilihMinggu = document.getElementById("pilih-minggu");
-const nominalKas = document.getElementById("nominal-kas");
-const daftarPembayaran = document.getElementById("daftar-pembayaran");
-const totalKasMinggu = document.getElementById("total-kas-minggu");
-const sudahBayar = document.getElementById("sudah-bayar");
-const belumBayar = document.getElementById("belum-bayar");
-const progressBayar = document.getElementById("progress-bayar");
-const persentaseBayar = document.getElementById("persentase-bayar");
-const periodeKas = document.getElementById("periode");
-
-// ---------- MEMUAT DATA SISWA ----------
 let siswa = [];
 
 try {
-  const tersimpan = JSON.parse(
-    localStorage.getItem("bayarKasSiswa") || "[]"
-  );
+  const data = JSON.parse(localStorage.getItem("bayarKasSiswa") || "[]");
 
-  if (Array.isArray(tersimpan)) {
-    siswa = tersimpan
-      .filter(item =>
-        item &&
-        typeof item.id === "string" &&
-        typeof item.nama === "string" &&
-        typeof item.kelas === "string"
-      )
-      .map(item => ({
-        ...item,
-        nim: typeof item.nim === "string" ? item.nim : ""
-      }));
+  if (Array.isArray(data)) {
+    siswa = data.filter(item =>
+      item &&
+      typeof item.id === "string" &&
+      typeof item.nama === "string" &&
+      typeof item.kelas === "string"
+    ).map(item => ({
+      ...item,
+      nim: typeof item.nim === "string" ? item.nim : ""
+    }));
   }
 } catch (error) {
-  console.error("Gagal membaca data siswa:", error);
+  siswa = [];
 }
 
 function simpanData() {
   localStorage.setItem("bayarKasSiswa", JSON.stringify(siswa));
 }
 
-// ---------- MEMUAT RIWAYAT PEMBAYARAN ----------
-let dataPembayaran = {};
-
-try {
-  const tersimpan = JSON.parse(
-    localStorage.getItem("bayarKasMingguan") || "{}"
-  );
-
-  if (
-    tersimpan &&
-    typeof tersimpan === "object" &&
-    !Array.isArray(tersimpan)
-  ) {
-    dataPembayaran = tersimpan;
-  }
-} catch (error) {
-  console.error("Gagal membaca riwayat pembayaran:", error);
-}
-
-function simpanPembayaran() {
-  localStorage.setItem(
-    "bayarKasMingguan",
-    JSON.stringify(dataPembayaran)
-  );
-}
-
-function kunciMinggu() {
-  return pilihMinggu ? pilihMinggu.value : "1";
-}
-
-function dataMingguAktif() {
-  const minggu = kunciMinggu();
-
-  if (
-    !dataPembayaran[minggu] ||
-    typeof dataPembayaran[minggu] !== "object"
-  ) {
-    dataPembayaran[minggu] = {
-      nominal: 5000,
-      siswa: {}
-    };
-  }
-
-  const data = dataPembayaran[minggu];
-
-  if (
-    !data.siswa ||
-    typeof data.siswa !== "object" ||
-    Array.isArray(data.siswa)
-  ) {
-    data.siswa = {};
-  }
-
-  if (!Number.isFinite(Number(data.nominal)) || Number(data.nominal) < 0) {
-    data.nominal = 5000;
-  } else {
-    data.nominal = Number(data.nominal);
-  }
-
-  return data;
-}
-
-// ---------- FORMAT RUPIAH ----------
-function rupiah(nilai) {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    maximumFractionDigits: 0
-  }).format(nilai);
-}
-
-// ---------- MENAMPILKAN DATA SISWA ----------
 function tampilkanSiswa() {
-  if (!daftarSiswa) return;
-
-  const kataKunci = inputCari
-    ? inputCari.value.trim().toLowerCase()
-    : "";
+  const kataKunci = inputCari.value.trim().toLowerCase();
 
   const hasil = siswa.filter(item =>
     item.nim.toLowerCase().includes(kataKunci) ||
@@ -158,12 +61,18 @@ function tampilkanSiswa() {
     hasil.forEach((item, index) => {
       const baris = document.createElement("tr");
 
-      [index + 1, item.nim || "—", item.nama, item.kelas]
-        .forEach(teks => {
-          const kolom = document.createElement("td");
-          kolom.textContent = teks;
-          baris.appendChild(kolom);
-        });
+      const nilai = [
+        index + 1,
+        item.nim || "—",
+        item.nama,
+        item.kelas
+      ];
+
+      nilai.forEach(teks => {
+        const kolom = document.createElement("td");
+        kolom.textContent = teks;
+        baris.appendChild(kolom);
+      });
 
       const aksi = document.createElement("td");
       aksi.className = "student-actions";
@@ -186,116 +95,117 @@ function tampilkanSiswa() {
     });
   }
 
-  if (totalSiswa) {
-    totalSiswa.textContent = siswa.length + " siswa";
-  }
+  totalSiswa.textContent = `${siswa.length} siswa`;
 
   if (jumlahSiswa) {
-    jumlahSiswa.textContent = siswa.length + " siswa";
+    jumlahSiswa.textContent = `${siswa.length} siswa`;
+  }
+}
+
+formSiswa.addEventListener("submit", event => {
+  event.preventDefault();
+
+  const nim = inputNim.value.trim();
+  const nama = inputNama.value.trim();
+  const kelas = inputKelas.value.trim();
+
+  if (!nim || !nama || !kelas) {
+    alert("NIM, nama, dan kelas wajib diisi.");
+    return;
   }
 
-  // Perbarui tabel pembayaran setiap daftar siswa berubah.
-  tampilkanPembayaran();
-}
+  const nimSudahAda = siswa.some(item =>
+    item.nim.toLowerCase() === nim.toLowerCase() &&
+    item.id !== inputId.value
+  );
 
-// ---------- TAMBAH & EDIT SISWA ----------
-if (formSiswa) {
-  formSiswa.addEventListener("submit", event => {
-    event.preventDefault();
-
-    if (!inputNim || !inputNama || !inputKelas || !inputId) return;
-
-    const nim = inputNim.value.trim();
-    const nama = inputNama.value.trim();
-    const kelas = inputKelas.value.trim();
-
-    if (!nim || !nama || !kelas) {
-      alert("NIM, nama, dan kelas wajib diisi.");
-      return;
-    }
-
-    const nimSudahAda = siswa.some(item =>
-      item.nim.toLowerCase() === nim.toLowerCase() &&
-      item.id !== inputId.value
-    );
-
-    if (nimSudahAda) {
-      alert("NIM tersebut sudah terdaftar.");
-      return;
-    }
-
-    if (inputId.value) {
-      const index = siswa.findIndex(item => item.id === inputId.value);
-
-      if (index !== -1) {
-        siswa[index] = { ...siswa[index], nim, nama, kelas };
-      }
-    } else {
-      siswa.push({
-        id: crypto.randomUUID
-          ? crypto.randomUUID()
-          : String(Date.now()) + Math.random().toString(16).slice(2),
-        nim,
-        nama,
-        kelas
-      });
-    }
-
-    simpanData();
-    resetForm();
-    tampilkanSiswa();
-  });
-}
-
-function editSiswa(id) {
-  const item = siswa.find(s => s.id === id);
-  if (!item) return;
-
-  if (!inputId || !inputNim || !inputNama || !inputKelas) return;
-
-  inputId.value = item.id;
-  inputNim.value = item.nim;
-  inputNama.value = item.nama;
-  inputKelas.value = item.kelas;
-
-  if (tombolSimpan) tombolSimpan.textContent = "Simpan Perubahan";
-  if (tombolBatal) tombolBatal.hidden = false;
-
-  if (formSiswa) {
-    formSiswa.scrollIntoView({ behavior: "smooth", block: "center" });
+  if (nimSudahAda) {
+    alert("NIM tersebut sudah terdaftar.");
+    return;
   }
 
-  inputNim.focus();
-}
+  if (inputId.value) {
+    const index = siswa.findIndex(item => item.id === inputId.value);
 
-function hapusSiswa(id) {
-  const item = siswa.find(s => s.id === id);
-  if (!item) return;
+    if (index !== -1) {
+      siswa[index] = { ...siswa[index], nim, nama, kelas };
+    }
+  } else {
+    siswa.push({
+      id: crypto.randomUUID(),
+      nim,
+      nama,
+      kelas
+    });
+  }
 
-  if (!confirm("Yakin ingin menghapus data " + item.nama + "?")) return;
-
-  siswa = siswa.filter(s => s.id !== id);
   simpanData();
   resetForm();
   tampilkanSiswa();
+    });
+  
+/* ===== FITUR PEMBAYARAN KAS MINGGUAN ===== */
+
+const pilihMinggu = document.getElementById("pilih-minggu");
+const nominalKas = document.getElementById("nominal-kas");
+const daftarPembayaran = document.getElementById("daftar-pembayaran");
+const totalKasMinggu = document.getElementById("total-kas-minggu");
+const sudahBayar = document.getElementById("sudah-bayar");
+const belumBayar = document.getElementById("belum-bayar");
+const progressBayar = document.getElementById("progress-bayar");
+const persentaseBayar = document.getElementById("persentase-bayar");
+const periodeKas = document.getElementById("periode");
+
+let dataPembayaran = {};
+
+try {
+  const tersimpan = JSON.parse(
+    localStorage.getItem("bayarKasMingguan") || "{}"
+  );
+
+  if (tersimpan && typeof tersimpan === "object" && !Array.isArray(tersimpan)) {
+    dataPembayaran = tersimpan;
+  }
+} catch (error) {
+  dataPembayaran = {};
 }
 
-function resetForm() {
-  if (formSiswa) formSiswa.reset();
-  if (inputId) inputId.value = "";
-  if (tombolSimpan) tombolSimpan.textContent = "Tambah Siswa";
-  if (tombolBatal) tombolBatal.hidden = true;
+function simpanPembayaran() {
+  localStorage.setItem(
+    "bayarKasMingguan",
+    JSON.stringify(dataPembayaran)
+  );
 }
 
-if (tombolBatal) {
-  tombolBatal.addEventListener("click", resetForm);
+function kunciMinggu() {
+  return pilihMinggu.value;
 }
 
-if (inputCari) {
-  inputCari.addEventListener("input", tampilkanSiswa);
+function dataMingguAktif() {
+  const minggu = kunciMinggu();
+
+  if (!dataPembayaran[minggu]) {
+    dataPembayaran[minggu] = {
+      nominal: Number(nominalKas.value) || 5000,
+      siswa: {}
+    };
+  }
+
+  if (!dataPembayaran[minggu].siswa) {
+    dataPembayaran[minggu].siswa = {};
+  }
+
+  return dataPembayaran[minggu];
 }
 
-// ---------- MENAMPILKAN PEMBAYARAN ----------
+function rupiah(nilai) {
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    maximumFractionDigits: 0
+  }).format(nilai);
+}
+
 function tampilkanPembayaran() {
   if (!pilihMinggu || !nominalKas || !daftarPembayaran) return;
 
@@ -303,6 +213,7 @@ function tampilkanPembayaran() {
   const data = dataMingguAktif();
 
   nominalKas.value = data.nominal;
+
   daftarPembayaran.innerHTML = "";
 
   let jumlahSudahBayar = 0;
@@ -330,36 +241,37 @@ function tampilkanPembayaran() {
       const nama = document.createElement("td");
       nama.textContent = item.nama;
 
-      const kolomStatus = document.createElement("td");
+      const status = document.createElement("td");
       const labelStatus = document.createElement("span");
-
       labelStatus.className = sudah
         ? "payment-status-paid"
         : "payment-status-unpaid";
       labelStatus.textContent = sudah ? "Sudah Bayar" : "Belum Bayar";
-      kolomStatus.appendChild(labelStatus);
+      status.appendChild(labelStatus);
 
       const aksi = document.createElement("td");
       const tombol = document.createElement("button");
-
       tombol.type = "button";
       tombol.textContent = sudah ? "Batalkan" : "Tandai Bayar";
 
       tombol.addEventListener("click", () => {
         const dataAktif = dataMingguAktif();
-        dataAktif.siswa[item.id] = dataAktif.siswa[item.id] !== true;
+
+        dataAktif.siswa[item.id] = !(
+          dataAktif.siswa[item.id] === true
+        );
 
         simpanPembayaran();
         tampilkanPembayaran();
       });
 
       aksi.appendChild(tombol);
-      baris.append(nomor, nim, nama, kolomStatus, aksi);
+      baris.append(nomor, nim, nama, status, aksi);
       daftarPembayaran.appendChild(baris);
 
       if (sudah) {
         jumlahSudahBayar++;
-        totalTerkumpul += data.nominal;
+        totalTerkumpul += Number(data.nominal) || 0;
       }
     });
   }
@@ -370,21 +282,20 @@ function tampilkanPembayaran() {
     : 0;
 
   if (sudahBayar) {
-    sudahBayar.textContent = jumlahSudahBayar + " siswa";
+    sudahBayar.textContent = `${jumlahSudahBayar} siswa`;
   }
 
   if (belumBayar) {
-    belumBayar.textContent = jumlahBelumBayar + " siswa";
+    belumBayar.textContent = `${jumlahBelumBayar} siswa`;
   }
 
   if (progressBayar) {
-    progressBayar.style.width = persen + "%";
+    progressBayar.style.width = `${persen}%`;
   }
 
   if (persentaseBayar) {
-    persentaseBayar.textContent = siswa.length
-      ? persen + "% siswa sudah membayar minggu ke-" + minggu
-      : "Belum ada data siswa.";
+    persentaseBayar.textContent =
+      `${persen}% siswa sudah membayar minggu ke-${minggu}`;
   }
 
   if (totalKasMinggu) {
@@ -392,15 +303,16 @@ function tampilkanPembayaran() {
   }
 
   if (periodeKas) {
-    periodeKas.textContent = "Minggu ke-" + minggu;
+    periodeKas.textContent = `Minggu ke-${minggu}`;
   }
 
   simpanPembayaran();
 }
 
-// ---------- EVENT PEMBAYARAN ----------
 if (pilihMinggu && nominalKas && daftarPembayaran) {
-  pilihMinggu.addEventListener("change", tampilkanPembayaran);
+  pilihMinggu.addEventListener("change", () => {
+    tampilkanPembayaran();
+  });
 
   nominalKas.addEventListener("change", () => {
     const nominal = Number(nominalKas.value);
@@ -415,8 +327,49 @@ if (pilihMinggu && nominalKas && daftarPembayaran) {
     simpanPembayaran();
     tampilkanPembayaran();
   });
+
+  tampilkanPembayaran();
 }
 
-// ---------- JALANKAN SAAT HALAMAN DIBUKA ----------
+});
+
+function editSiswa(id) {
+  const item = siswa.find(s => s.id === id);
+  if (!item) return;
+
+  inputId.value = item.id;
+  inputNim.value = item.nim;
+  inputNama.value = item.nama;
+  inputKelas.value = item.kelas;
+
+  tombolSimpan.textContent = "Simpan Perubahan";
+  tombolBatal.hidden = false;
+
+  formSiswa.scrollIntoView({ behavior: "smooth", block: "center" });
+  inputNim.focus();
+}
+
+function hapusSiswa(id) {
+  const item = siswa.find(s => s.id === id);
+  if (!item) return;
+
+  if (!confirm(`Yakin ingin menghapus data ${item.nama}?`)) return;
+
+  siswa = siswa.filter(s => s.id !== id);
+
+  simpanData();
+  resetForm();
+  tampilkanSiswa();
+}
+
+function resetForm() {
+  formSiswa.reset();
+  inputId.value = "";
+  tombolSimpan.textContent = "Tambah Siswa";
+  tombolBatal.hidden = true;
+}
+
+tombolBatal.addEventListener("click", resetForm);
+inputCari.addEventListener("input", tampilkanSiswa);
+
 tampilkanSiswa();
-tampilkanPembayaran();
