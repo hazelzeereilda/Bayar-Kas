@@ -328,10 +328,8 @@ if (pilihMinggu && nominalKas && daftarPembayaran) {
     tampilkanPembayaran();
   });
 
-  tampilkanPembayaran();
+    tampilkanPembayaran();
 }
-
-});
 
 function editSiswa(id) {
   const item = siswa.find(s => s.id === id);
