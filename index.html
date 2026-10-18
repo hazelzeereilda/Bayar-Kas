@@ -205,30 +205,68 @@
           </div>
         </article>
       </section>
-
+      
       <section class="panel transaction-panel" id="pengeluaran">
         <div class="panel-heading">
           <div>
-            <h3>Transaksi Terbaru</h3>
-            <p>Riwayat pemasukan dan pengeluaran</p>
+            <h3>Pengeluaran Kas</h3>
+            <p>Catat dan pantau uang keluar kas kelas</p>
           </div>
-          <span class="read-only">Pratinjau</span>
+          <span class="read-only">Kelola Kas</span>
         </div>
-
+      
+        <form id="form-pengeluaran" class="student-form">
+          <div class="student-input">
+            <label for="tanggal-pengeluaran">Tanggal</label>
+            <input type="date" id="tanggal-pengeluaran" required>
+          </div>
+      
+          <div class="student-input">
+            <label for="keterangan-pengeluaran">Keterangan</label>
+            <input
+              type="text"
+              id="keterangan-pengeluaran"
+              placeholder="Contoh: Beli spidol"
+              required
+            >
+          </div>
+      
+          <div class="student-input">
+            <label for="nominal-pengeluaran">Nominal (Rp)</label>
+            <input
+              type="number"
+              id="nominal-pengeluaran"
+              min="1"
+              placeholder="Contoh: 15000"
+              required
+            >
+          </div>
+      
+          <button type="submit" class="student-button">
+            Simpan Pengeluaran
+          </button>
+        </form>
+      
+        <div class="info-row">
+          <span>Total Pengeluaran</span>
+          <strong id="total-pengeluaran">Rp0</strong>
+        </div>
+      
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>TRANSAKSI</th>
-                <th>TANGGAL</th>
-                <th>KATEGORI</th>
-                <th>NOMINAL</th>
+                <th>No.</th>
+                <th>Tanggal</th>
+                <th>Keterangan</th>
+                <th>Nominal</th>
+                <th>Aksi</th>
               </tr>
             </thead>
-            <tbody id="daftar-transaksi">
+            <tbody id="daftar-pengeluaran">
               <tr>
-                <td colspan="4" class="empty-state">
-                  Belum ada transaksi untuk ditampilkan.
+                <td colspan="5" class="empty-state">
+                  Belum ada pengeluaran.
                 </td>
               </tr>
             </tbody>
