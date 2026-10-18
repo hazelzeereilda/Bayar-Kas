@@ -1003,3 +1003,278 @@ td {
     min-width: 540px;
   }
 }
+
+
+/* =====================================
+   FORM PENGELUARAN KAS
+===================================== */
+
+#form-pengeluaran {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+  margin-bottom: 24px;
+}
+
+#form-pengeluaran label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #091540;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#form-pengeluaran input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 11px 12px;
+  border: 1px solid #dce3f3;
+  border-radius: 9px;
+  background: #fff;
+  color: #091540;
+  font: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#form-pengeluaran input:focus {
+  border-color: #1b2cc1;
+  box-shadow: 0 0 0 3px rgba(27, 44, 193, 0.1);
+}
+
+#form-pengeluaran button {
+  grid-column: 1 / -1;
+  justify-self: start;
+  padding: 11px 18px;
+  border: none;
+  border-radius: 9px;
+  background: #1b2cc1;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+#form-pengeluaran button:hover {
+  background: #091540;
+  transform: translateY(-1px);
+}
+
+/* =====================================
+   TOTAL PENGELUARAN
+===================================== */
+
+#total-pengeluaran {
+  color: #091540;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+#pengeluaran .transaction-panel,
+#pengeluaran {
+  min-width: 0;
+}
+
+/* =====================================
+   TABEL PENGELUARAN
+===================================== */
+
+#pengeluaran table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 18px;
+  font-size: 12px;
+}
+
+#pengeluaran th {
+  padding: 13px 10px;
+  background: #f3f6ff;
+  color: #7180a5;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+}
+
+#pengeluaran td {
+  padding: 13px 10px;
+  border-bottom: 1px solid #e8edf7;
+  color: #091540;
+  vertical-align: middle;
+}
+
+#pengeluaran tbody tr:hover {
+  background: #f8faff;
+}
+
+#pengeluaran .empty-state {
+  padding: 30px 12px;
+  color: #7a87a7;
+  text-align: center;
+}
+
+/* Tombol hapus pengeluaran */
+
+#pengeluaran .student-cancel {
+  padding: 7px 11px;
+  border: 1px solid #ffd5d5;
+  border-radius: 7px;
+  background: #fff1f1;
+  color: #c62828;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#pengeluaran .student-cancel:hover {
+  background: #ffe0e0;
+}
+
+/* =====================================
+   FORM PEMBAYARAN MINGGUAN
+===================================== */
+
+.weekly-payment-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.weekly-payment-tools label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  color: #091540;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.weekly-payment-tools select,
+.weekly-payment-tools input {
+  min-width: 130px;
+  padding: 10px 12px;
+  border: 1px solid #dce3f3;
+  border-radius: 9px;
+  background: #fff;
+  color: #091540;
+  font: inherit;
+  outline: none;
+}
+
+.weekly-payment-tools select:focus,
+.weekly-payment-tools input:focus {
+  border-color: #1b2cc1;
+}
+
+/* =====================================
+   TABEL PEMBAYARAN
+===================================== */
+
+#pembayaran table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 12px;
+}
+
+#pembayaran th {
+  padding: 13px 10px;
+  background: #f3f6ff;
+  color: #7180a5;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+}
+
+#pembayaran td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #e8edf7;
+  color: #091540;
+  vertical-align: middle;
+}
+
+#pembayaran tbody tr:hover {
+  background: #f8faff;
+}
+
+/* Status pembayaran */
+
+.payment-status-paid,
+.payment-status-unpaid {
+  display: inline-block;
+  padding: 6px 9px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.payment-status-paid {
+  background: #e5f8ed;
+  color: #18834b;
+}
+
+.payment-status-unpaid {
+  background: #ffe9e9;
+  color: #c62828;
+}
+
+/* Tombol pembayaran */
+
+#pembayaran tbody button {
+  padding: 7px 10px;
+  border: none;
+  border-radius: 7px;
+  background: #e9edff;
+  color: #1b2cc1;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#pembayaran tbody button:hover {
+  background: #d8e0ff;
+}
+
+/* =====================================
+   RESPONSIVE UNTUK LAYAR KECIL
+===================================== */
+
+@media (max-width: 600px) {
+  #form-pengeluaran {
+    grid-template-columns: 1fr;
+  }
+
+  #form-pengeluaran button {
+    grid-column: 1;
+  }
+
+  .weekly-payment-tools {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .weekly-payment-tools select,
+  .weekly-payment-tools input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #pengeluaran,
+  #pembayaran {
+    overflow-x: auto;
+  }
+
+  #pengeluaran table,
+  #pembayaran table {
+    min-width: 520px;
+  }
+}
+
