@@ -120,6 +120,67 @@
           <p class="progress-caption" id="persentase-bayar">
             Belum ada data pembayaran
           </p>
+              <div class="weekly-payment-tools">
+                <h3>Kelola Kas Mingguan</h3>
+              
+                <div class="payment-form-row">
+                  <label for="pilih-minggu">Minggu pembayaran</label>
+                  <select id="pilih-minggu">
+                    <option value="1">Minggu ke-1</option>
+                    <option value="2">Minggu ke-2</option>
+                    <option value="3">Minggu ke-3</option>
+                    <option value="4">Minggu ke-4</option>
+                    <option value="5">Minggu ke-5</option>
+                    <option value="6">Minggu ke-6</option>
+                    <option value="7">Minggu ke-7</option>
+                    <option value="8">Minggu ke-8</option>
+                    <option value="9">Minggu ke-9</option>
+                    <option value="10">Minggu ke-10</option>
+                    <option value="11">Minggu ke-11</option>
+                    <option value="12">Minggu ke-12</option>
+                    <option value="13">Minggu ke-13</option>
+                    <option value="14">Minggu ke-14</option>
+                    <option value="15">Minggu ke-15</option>
+                    <option value="16">Minggu ke-16</option>
+                  </select>
+                </div>
+              
+                <div class="payment-form-row">
+                  <label for="nominal-kas">Nominal kas per siswa (Rp)</label>
+                  <input
+                    type="number"
+                    id="nominal-kas"
+                    min="0"
+                    step="1000"
+                    value="5000"
+                    placeholder="Contoh: 5000"
+                  />
+                </div>
+              
+                <div class="payment-table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>No.</th>
+                        <th>NIM</th>
+                        <th>Nama Siswa</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody id="daftar-pembayaran">
+                      <tr>
+                        <td colspan="5">Memuat data siswa...</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              
+                <p>
+                  Total uang terkumpul:
+                  <strong id="total-kas-minggu">Rp0</strong>
+                </p>
+              </div>
         </article>
 
         <article class="panel" id="laporan">
