@@ -373,3 +373,120 @@ tombolBatal.addEventListener("click", resetForm);
 inputCari.addEventListener("input", tampilkanSiswa);
 
 tampilkanSiswa();
+
+(() => {
+  const form = document.getElementById("form-pengeluaran");
+  const tanggalInput = document.getElementById("tanggal-pengeluaran");
+  const keteranganInput = document.getElementById("keterangan-pengeluaran");
+  const nominalInput = document.getElementById("nominal-pengeluaran");
+  const tabel = document.getElementById("daftar-pengeluaran");
+  const totalTeks = document.getElementById("total-pengeluaran");
+
+  if (!form || !tabel || !totalTeks) return;
+
+  let transaksi = [];
+
+  try {
+    transaksi = JSON.parse(
+      localStorage.getItem("bayarKasPengeluaran") || "[]"
+    );
+
+    if (!Array.isArray(transaksi)) transaksi = [];
+  } catch {
+    transaksi = [];
+  }
+
+  const rupiah = (angka) =>
+    "Rp" + Number(angka).toLocaleString("id-ID");
+
+  function simpan() {
+    localStorage.setItem(
+      "bayarKasPengeluaran",
+      JSON.stringify(transaksi)
+    );
+  }
+
+  function render() {
+    tabel.innerHTML = "";
+
+    if (transaksi.length === 0) {
+      tabel.innerHTML = `
+        <tr>
+          <td colspan="5" class="empty-state">
+            Belum ada pengeluaran.
+          </td>
+        </tr>
+      `;
+    }
+
+    transaksi.forEach((item, index) => {
+      const baris = document.createElement("tr");
+
+      [
+        index + 1,
+        item.tanggal,
+        item.keterangan,
+        rupiah(item.nominal)
+      ].forEach((isi) => {
+        const sel = document.createElement("td");
+        sel.textContent = isi;
+        baris.appendChild(sel);
+      });
+
+      const kolomAksi = document.createElement("td");
+      const tombol = document.createElement("button");
+
+      tombol.type = "button";
+      tombol.className = "student-cancel";
+      tombol.textContent = "Hapus";
+
+      tombol.addEventListener("click", () => {
+        if (!confirm("Yakin mau menghapus transaksi ini?")) return;
+
+        transaksi = transaksi.filter(
+          (data) => data.id !== item.id
+        );
+
+        simpan();
+        render();
+      });
+
+      kolomAksi.appendChild(tombol);
+      baris.appendChild(kolomAksi);
+      tabel.appendChild(baris);
+    });
+
+    const total = transaksi.reduce(
+      (jumlah, item) => jumlah + Number(item.nominal),
+      0
+    );
+
+    totalTeks.textContent = rupiah(total);
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const tanggal = tanggalInput.value;
+    const keterangan = keteranganInput.value.trim();
+    const nominal = Number(nominalInput.value);
+
+    if (!tanggal || !keterangan || !Number.isFinite(nominal) || nominal <= 0) {
+      alert("Isi semua data dengan benar ya!");
+      return;
+    }
+
+    transaksi.push({
+      id: Date.now(),
+      tanggal,
+      keterangan,
+      nominal
+    });
+
+    simpan();
+    form.reset();
+    render();
+  });
+
+  render();
+})();
