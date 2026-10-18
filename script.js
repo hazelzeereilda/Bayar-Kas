@@ -142,6 +142,7 @@ formSiswa.addEventListener("submit", event => {
   simpanData();
   resetForm();
   tampilkanSiswa();
+    });
   
 /* ===== FITUR PEMBAYARAN KAS MINGGUAN ===== */
 
