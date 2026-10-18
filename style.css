@@ -828,3 +828,179 @@ td {
     font-size: 18px;
   }
 }
+
+
+/* ===== KELOLA KAS MINGGUAN ===== */
+
+.weekly-payment-tools {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f5;
+  color: #091540;
+}
+
+.weekly-payment-tools h3 {
+  margin: 0 0 18px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #091540;
+}
+
+.payment-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.payment-form-row label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #34446b;
+}
+
+.payment-form-row input,
+.payment-form-row select {
+  width: 100%;
+  max-width: 100%;
+  min-height: 43px;
+  padding: 10px 13px;
+  border: 1px solid #dce4f5;
+  border-radius: 9px;
+  background: #f8faff;
+  color: #091540;
+  font: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.payment-form-row input:focus,
+.payment-form-row select:focus {
+  border-color: #1b2cc1;
+  box-shadow: 0 0 0 3px rgba(27, 44, 193, 0.1);
+  background: #fff;
+}
+
+.payment-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+  border: 1px solid #e2e8f5;
+  border-radius: 12px;
+}
+
+.payment-table-wrap table {
+  width: 100%;
+  min-width: 540px;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 13px;
+}
+
+.payment-table-wrap thead {
+  background: #eef2ff;
+}
+
+.payment-table-wrap th {
+  padding: 14px 12px;
+  text-align: left;
+  color: #34446b;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.payment-table-wrap td {
+  padding: 13px 12px;
+  border-top: 1px solid #edf0f8;
+  color: #243253;
+  vertical-align: middle;
+}
+
+.payment-table-wrap tbody tr:hover {
+  background: #f8faff;
+}
+
+.payment-table-wrap tbody td[colspan] {
+  padding: 24px 12px;
+  text-align: center;
+  color: #7b87a6;
+}
+
+#total-kas-minggu {
+  color: #1b2cc1;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.weekly-payment-tools > p {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 15px 16px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #34446b;
+  font-size: 13px;
+}
+
+/* Tombol aksi pembayaran */
+
+.payment-table-wrap button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 7px;
+  background: #1b2cc1;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.payment-table-wrap button:hover {
+  background: #091540;
+  transform: translateY(-1px);
+}
+
+/* Status pembayaran */
+
+.payment-status-paid {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.payment-status-unpaid {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+@media (max-width: 600px) {
+  .weekly-payment-tools {
+    margin-top: 18px;
+  }
+
+  .payment-form-row input,
+  .payment-form-row select {
+    width: 100%;
+  }
+
+  .payment-table-wrap table {
+    min-width: 540px;
+  }
+}
