@@ -571,3 +571,61 @@ if (pilihMinggu && nominalKas && daftarPembayaran) {
 
 tampilkanSiswa();
 tampilkanPembayaran();
+
+
+/* =====================================
+   SIDEBAR ACTIVE MENU
+===================================== */
+
+const menuSidebar = document.querySelectorAll(".navigation .nav-item");
+
+menuSidebar.forEach(menu => {
+  menu.addEventListener("click", () => {
+    menuSidebar.forEach(item => {
+      item.classList.remove("active");
+    });
+
+    menu.classList.add("active");
+  });
+});
+
+function updateSidebarActive() {
+  const currentHash = window.location.hash || "#dashboard";
+
+  menuSidebar.forEach(menu => {
+    menu.classList.toggle(
+      "active",
+      menu.getAttribute("href") === currentHash
+    );
+  });
+}
+
+window.addEventListener("hashchange", updateSidebarActive);
+updateSidebarActive();
+
+
+/* SIDEBAR ACTIVE MENU */
+
+const menuSidebar = document.querySelectorAll(".navigation .nav-item");
+
+function updateSidebarActive() {
+  const hash = window.location.hash || "#dashboard";
+
+  menuSidebar.forEach(menu => {
+    menu.classList.toggle(
+      "active",
+      menu.getAttribute("href") === hash
+    );
+  });
+}
+
+menuSidebar.forEach(menu => {
+  menu.addEventListener("click", () => {
+    menuSidebar.forEach(item => item.classList.remove("active"));
+    menu.classList.add("active");
+  });
+});
+
+window.addEventListener("hashchange", updateSidebarActive);
+updateSidebarActive();
+
