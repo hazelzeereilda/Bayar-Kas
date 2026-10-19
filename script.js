@@ -1,15 +1,18 @@
 
 /* =========================================
-   KASKELAS - SCRIPT LENGKAP
-   Penyimpanan:
+   KAS KELAS - SCRIPT LENGKAP
+   Penyimpanan lokal:
    - bayarKasSiswa
    - bayarKasMingguan
    - bayarKasPengeluaran
+
+   Data lama tidak dihapus saat halaman dibuka.
 ========================================= */
 
+"use strict";
 
 /* =========================================
-   FORMAT RUPIAH DAN ID
+   UTILITAS
 ========================================= */
 
 function formatRupiah(nilai) {
@@ -22,6 +25,33 @@ function buatId() {
     : "id-" + Date.now() + "-" + Math.random().toString(36).slice(2);
 }
 
+function ambilData(key, nilaiDefault) {
+  try {
+    const raw = localStorage.getItem(key);
+
+    if (raw === null) {
+      return {
+        berhasil: true,
+        ada: false,
+        data: nilaiDefault
+      };
+    }
+
+    return {
+      berhasil: true,
+      ada: true,
+      data: JSON.parse(raw)
+    };
+  } catch (error) {
+    console.error("Gagal membaca " + key + ":", error);
+
+    return {
+      berhasil: false,
+      ada: true,
+      data: nilaiDefault
+    };
+  }
+}
 
 /* =========================================
    DATA SISWA
@@ -39,39 +69,56 @@ const jumlahSiswa = document.getElementById("jumlah-siswa");
 const tombolSimpan = document.getElementById("tombol-simpan");
 const tombolBatal = document.getElementById("batal-edit");
 
+const hasilBacaSiswa = ambilData("bayarKasSiswa", []);
 let siswa = [];
+let siswaSiapDisimpan = false;
 
-try {
-  const dataSiswaTersimpan = JSON.parse(
-    localStorage.getItem("bayarKasSiswa") || "[]"
+if (
+  hasilBacaSiswa.berhasil &&
+  Array.isArray(hasilBacaSiswa.data)
+) {
+  // Terima data lama yang belum memiliki ID atau NIM.
+  // ID sementara dibuat di memori, tanpa langsung menimpa data lama.
+  siswa = hasilBacaSiswa.data
+    .filter(item => item && typeof item === "object")
+    .map(item => ({
+      ...item,
+      id: item.id != null && String(item.id) !== ""
+        ? String(item.id)
+        : buatId(),
+      nim: String(item.nim ?? item.NIM ?? ""),
+      nama: String(item.nama ?? item.name ?? ""),
+      kelas: String(item.kelas ?? item.class ?? "")
+    }));
+
+  // Simpan hanya jika data yang dibaca memang array berisi objek.
+  siswaSiapDisimpan = hasilBacaSiswa.data.every(
+    item => item && typeof item === "object"
   );
-
-  if (Array.isArray(dataSiswaTersimpan)) {
-    siswa = dataSiswaTersimpan
-      .filter(item =>
-        item &&
-        item.id !== undefined &&
-        typeof item.nama === "string" &&
-        typeof item.kelas === "string"
-      )
-      .map(item => ({
-        ...item,
-        id: String(item.id),
-        nim: String(item.nim || ""),
-        nama: item.nama,
-        kelas: item.kelas
-      }));
-  }
-} catch (error) {
-  console.error("Gagal membaca data siswa:", error);
+} else if (!hasilBacaSiswa.ada) {
+  siswaSiapDisimpan = true;
+} else {
+  console.error(
+    "Data siswa tidak dikenali. Penyimpanan siswa dikunci agar data lama tidak tertimpa."
+  );
 }
 
 function simpanDataSiswa() {
+  if (!siswaSiapDisimpan) {
+    alert(
+      "Data siswa lama belum bisa dipastikan formatnya. " +
+      "Data tidak ditimpa agar tidak hilang."
+    );
+    return false;
+  }
+
   try {
     localStorage.setItem("bayarKasSiswa", JSON.stringify(siswa));
+    return true;
   } catch (error) {
     console.error("Gagal menyimpan data siswa:", error);
-    alert("Data siswa gagal disimpan di browser.");
+    alert("Data siswa gagal disimpan. Periksa penyimpanan browser.");
+    return false;
   }
 }
 
@@ -86,13 +133,18 @@ function editSiswa(id) {
   const item = siswa.find(s => s.id === String(id));
   if (!item) return;
 
+  if (!formSiswa || !inputId || !inputNim || !inputNama || !inputKelas) {
+    alert("Form siswa belum lengkap. Periksa ID elemen di index.html.");
+    return;
+  }
+
   inputId.value = item.id;
   inputNim.value = item.nim;
   inputNama.value = item.nama;
   inputKelas.value = item.kelas;
 
-  tombolSimpan.textContent = "Simpan Perubahan";
-  tombolBatal.hidden = false;
+  if (tombolSimpan) tombolSimpan.textContent = "Simpan Perubahan";
+  if (tombolBatal) tombolBatal.hidden = false;
 
   formSiswa.scrollIntoView({
     behavior: "smooth",
@@ -106,13 +158,16 @@ function hapusSiswa(id) {
   const item = siswa.find(s => s.id === String(id));
   if (!item) return;
 
-  if (!confirm(`Yakin ingin menghapus data ${item.nama}?`)) {
+  if (!confirm(`Yakin ingin menghapus data ${item.nama}?`)) return;
+
+  const siswaSebelumnya = [...siswa];
+  siswa = siswa.filter(s => s.id !== String(id));
+
+  if (!simpanDataSiswa()) {
+    siswa = siswaSebelumnya;
     return;
   }
 
-  siswa = siswa.filter(s => s.id !== String(id));
-
-  simpanDataSiswa();
   resetFormSiswa();
   tampilkanSiswa();
 }
@@ -184,13 +239,8 @@ function tampilkanSiswa() {
     });
   }
 
-  if (totalSiswa) {
-    totalSiswa.textContent = `${siswa.length} siswa`;
-  }
-
-  if (jumlahSiswa) {
-    jumlahSiswa.textContent = `${siswa.length} siswa`;
-  }
+  if (totalSiswa) totalSiswa.textContent = `${siswa.length} siswa`;
+  if (jumlahSiswa) jumlahSiswa.textContent = `${siswa.length} siswa`;
 
   tampilkanPembayaran();
 }
@@ -198,6 +248,11 @@ function tampilkanSiswa() {
 if (formSiswa) {
   formSiswa.addEventListener("submit", event => {
     event.preventDefault();
+
+    if (!inputId || !inputNim || !inputNama || !inputKelas) {
+      alert("Form siswa belum lengkap. Periksa index.html.");
+      return;
+    }
 
     const nim = inputNim.value.trim();
     const nama = inputNama.value.trim();
@@ -219,17 +274,22 @@ if (formSiswa) {
       return;
     }
 
+    const siswaSebelumnya = [...siswa];
+
     if (idEdit) {
       const index = siswa.findIndex(item => item.id === idEdit);
 
-      if (index !== -1) {
-        siswa[index] = {
-          ...siswa[index],
-          nim,
-          nama,
-          kelas
-        };
+      if (index === -1) {
+        alert("Data siswa yang mau diedit tidak ditemukan.");
+        return;
       }
+
+      siswa[index] = {
+        ...siswa[index],
+        nim,
+        nama,
+        kelas
+      };
     } else {
       siswa.push({
         id: buatId(),
@@ -239,7 +299,11 @@ if (formSiswa) {
       });
     }
 
-    simpanDataSiswa();
+    if (!simpanDataSiswa()) {
+      siswa = siswaSebelumnya;
+      return;
+    }
+
     resetFormSiswa();
     tampilkanSiswa();
   });
@@ -252,7 +316,6 @@ if (tombolBatal) {
 if (inputCari) {
   inputCari.addEventListener("input", tampilkanSiswa);
 }
-
 
 /* =========================================
    PEMBAYARAN KAS MINGGUAN
@@ -268,22 +331,20 @@ const progressBayar = document.getElementById("progress-bayar");
 const persentaseBayar = document.getElementById("persentase-bayar");
 const periodeKas = document.getElementById("periode");
 
+const hasilBacaPembayaran = ambilData("bayarKasMingguan", {});
 let dataPembayaran = {};
 
-try {
-  const pembayaranTersimpan = JSON.parse(
-    localStorage.getItem("bayarKasMingguan") || "{}"
+if (
+  hasilBacaPembayaran.berhasil &&
+  hasilBacaPembayaran.data &&
+  typeof hasilBacaPembayaran.data === "object" &&
+  !Array.isArray(hasilBacaPembayaran.data)
+) {
+  dataPembayaran = hasilBacaPembayaran.data;
+} else if (hasilBacaPembayaran.ada) {
+  console.error(
+    "Format pembayaran tidak dikenali. Data pembayaran tidak ditimpa."
   );
-
-  if (
-    pembayaranTersimpan &&
-    typeof pembayaranTersimpan === "object" &&
-    !Array.isArray(pembayaranTersimpan)
-  ) {
-    dataPembayaran = pembayaranTersimpan;
-  }
-} catch (error) {
-  console.error("Gagal membaca pembayaran:", error);
 }
 
 function simpanPembayaran() {
@@ -292,9 +353,11 @@ function simpanPembayaran() {
       "bayarKasMingguan",
       JSON.stringify(dataPembayaran)
     );
+    return true;
   } catch (error) {
     console.error("Gagal menyimpan pembayaran:", error);
     alert("Data pembayaran gagal disimpan di browser.");
+    return false;
   }
 }
 
@@ -307,7 +370,8 @@ function dataMingguAktif() {
 
   if (
     !dataPembayaran[minggu] ||
-    typeof dataPembayaran[minggu] !== "object"
+    typeof dataPembayaran[minggu] !== "object" ||
+    Array.isArray(dataPembayaran[minggu])
   ) {
     dataPembayaran[minggu] = {
       nominal: Number(nominalKas?.value) || 5000,
@@ -317,7 +381,8 @@ function dataMingguAktif() {
 
   if (
     !dataPembayaran[minggu].siswa ||
-    typeof dataPembayaran[minggu].siswa !== "object"
+    typeof dataPembayaran[minggu].siswa !== "object" ||
+    Array.isArray(dataPembayaran[minggu].siswa)
   ) {
     dataPembayaran[minggu].siswa = {};
   }
@@ -326,9 +391,7 @@ function dataMingguAktif() {
 }
 
 function tampilkanPembayaran() {
-  if (!pilihMinggu || !nominalKas || !daftarPembayaran) {
-    return;
-  }
+  if (!pilihMinggu || !nominalKas || !daftarPembayaran) return;
 
   const minggu = kunciMinggu();
   const data = dataMingguAktif();
@@ -369,10 +432,7 @@ function tampilkanPembayaran() {
         ? "payment-status-paid"
         : "payment-status-unpaid";
 
-      labelStatus.textContent = sudah
-        ? "Sudah Bayar"
-        : "Belum Bayar";
-
+      labelStatus.textContent = sudah ? "Sudah Bayar" : "Belum Bayar";
       status.appendChild(labelStatus);
 
       const aksi = document.createElement("td");
@@ -383,12 +443,21 @@ function tampilkanPembayaran() {
 
       tombol.addEventListener("click", () => {
         const dataAktif = dataMingguAktif();
+        const nilaiLama = dataAktif.siswa[item.id];
 
-        dataAktif.siswa[item.id] =
-          dataAktif.siswa[item.id] !== true;
+        dataAktif.siswa[item.id] = nilaiLama !== true;
 
-        simpanPembayaran();
+        if (!simpanPembayaran()) {
+          if (nilaiLama === undefined) {
+            delete dataAktif.siswa[item.id];
+          } else {
+            dataAktif.siswa[item.id] = nilaiLama;
+          }
+          return;
+        }
+
         tampilkanPembayaran();
+        renderPengeluaran();
       });
 
       aksi.appendChild(tombol);
@@ -407,17 +476,10 @@ function tampilkanPembayaran() {
     ? Math.round((jumlahSudahBayar / siswa.length) * 100)
     : 0;
 
-  if (sudahBayar) {
-    sudahBayar.textContent = `${jumlahSudahBayar} siswa`;
-  }
+  if (sudahBayar) sudahBayar.textContent = `${jumlahSudahBayar} siswa`;
+  if (belumBayar) belumBayar.textContent = `${jumlahBelumBayar} siswa`;
 
-  if (belumBayar) {
-    belumBayar.textContent = `${jumlahBelumBayar} siswa`;
-  }
-
-  if (progressBayar) {
-    progressBayar.style.width = `${persen}%`;
-  }
+  if (progressBayar) progressBayar.style.width = `${persen}%`;
 
   if (persentaseBayar) {
     persentaseBayar.textContent =
@@ -428,16 +490,16 @@ function tampilkanPembayaran() {
     totalKasMinggu.textContent = formatRupiah(totalTerkumpul);
   }
 
-  if (periodeKas) {
-    periodeKas.textContent = `Minggu ke-${minggu}`;
-  }
+  if (periodeKas) periodeKas.textContent = `Minggu ke-${minggu}`;
 
-  simpanPembayaran();
+  // Jangan menyimpan otomatis hanya karena halaman dibuka.
 }
 
-if (pilihMinggu && nominalKas && daftarPembayaran) {
+if (pilihMinggu) {
   pilihMinggu.addEventListener("change", tampilkanPembayaran);
+}
 
+if (nominalKas) {
   nominalKas.addEventListener("change", () => {
     const nominal = Number(nominalKas.value);
 
@@ -447,12 +509,20 @@ if (pilihMinggu && nominalKas && daftarPembayaran) {
       return;
     }
 
-    dataMingguAktif().nominal = nominal;
-    simpanPembayaran();
+    const dataAktif = dataMingguAktif();
+    const nominalLama = dataAktif.nominal;
+    dataAktif.nominal = nominal;
+
+    if (!simpanPembayaran()) {
+      dataAktif.nominal = nominalLama;
+      tampilkanPembayaran();
+      return;
+    }
+
     tampilkanPembayaran();
+    renderPengeluaran();
   });
 }
-
 
 /* =========================================
    PENGELUARAN KAS
@@ -470,23 +540,24 @@ const totalPengeluaranDashboard = document.getElementById(
 const saldoDashboard = document.getElementById("saldo");
 const pemasukanDashboard = document.getElementById("pemasukan");
 
+const hasilBacaPengeluaran = ambilData("bayarKasPengeluaran", []);
 let transaksiPengeluaran = [];
 
-try {
-  const pengeluaranTersimpan = JSON.parse(
-    localStorage.getItem("bayarKasPengeluaran") || "[]"
+if (
+  hasilBacaPengeluaran.berhasil &&
+  Array.isArray(hasilBacaPengeluaran.data)
+) {
+  transaksiPengeluaran = hasilBacaPengeluaran.data.filter(item =>
+    item &&
+    typeof item === "object" &&
+    item.id !== undefined &&
+    typeof item.tanggal === "string" &&
+    typeof item.keterangan === "string"
   );
-
-  if (Array.isArray(pengeluaranTersimpan)) {
-    transaksiPengeluaran = pengeluaranTersimpan.filter(item =>
-      item &&
-      item.id !== undefined &&
-      typeof item.tanggal === "string" &&
-      typeof item.keterangan === "string"
-    );
-  }
-} catch (error) {
-  console.error("Gagal membaca pengeluaran:", error);
+} else if (hasilBacaPengeluaran.ada) {
+  console.error(
+    "Format pengeluaran tidak dikenali. Data pengeluaran tidak ditimpa."
+  );
 }
 
 function simpanPengeluaran() {
@@ -495,9 +566,11 @@ function simpanPengeluaran() {
       "bayarKasPengeluaran",
       JSON.stringify(transaksiPengeluaran)
     );
+    return true;
   } catch (error) {
     console.error("Gagal menyimpan pengeluaran:", error);
     alert("Data pengeluaran gagal disimpan di browser.");
+    return false;
   }
 }
 
@@ -519,7 +592,11 @@ function hitungTotalPemasukanSemuaMinggu() {
 }
 
 function renderPengeluaran() {
-  if (!daftarPengeluaran) return;
+  if (!daftarPengeluaran) {
+    // Ringkasan dashboard tetap dihitung jika elemen tabel tidak ada.
+    perbaruiRingkasanKas();
+    return;
+  }
 
   daftarPengeluaran.innerHTML = "";
 
@@ -556,15 +633,19 @@ function renderPengeluaran() {
       tombolHapus.textContent = "Hapus";
 
       tombolHapus.addEventListener("click", () => {
-        if (!confirm("Yakin mau menghapus transaksi ini?")) {
-          return;
-        }
+        if (!confirm("Yakin mau menghapus transaksi ini?")) return;
+
+        const sebelumnya = [...transaksiPengeluaran];
 
         transaksiPengeluaran = transaksiPengeluaran.filter(
           data => String(data.id) !== String(item.id)
         );
 
-        simpanPengeluaran();
+        if (!simpanPengeluaran()) {
+          transaksiPengeluaran = sebelumnya;
+          return;
+        }
+
         renderPengeluaran();
       });
 
@@ -574,10 +655,16 @@ function renderPengeluaran() {
     });
   }
 
+  perbaruiRingkasanKas();
+}
+
+function perbaruiRingkasanKas() {
   const total = transaksiPengeluaran.reduce(
     (jumlah, item) => jumlah + (Number(item.nominal) || 0),
     0
   );
+
+  const pemasukan = hitungTotalPemasukanSemuaMinggu();
 
   if (totalPengeluaran) {
     totalPengeluaran.textContent = formatRupiah(total);
@@ -588,21 +675,26 @@ function renderPengeluaran() {
   }
 
   if (saldoDashboard) {
-    saldoDashboard.textContent = formatRupiah(
-      hitungTotalPemasukanSemuaMinggu() - total
-    );
+    saldoDashboard.textContent = formatRupiah(pemasukan - total);
   }
 
   if (pemasukanDashboard) {
-    pemasukanDashboard.textContent = formatRupiah(
-      hitungTotalPemasukanSemuaMinggu()
-    );
+    pemasukanDashboard.textContent = formatRupiah(pemasukan);
   }
 }
 
 if (formPengeluaran) {
   formPengeluaran.addEventListener("submit", event => {
     event.preventDefault();
+
+    if (
+      !tanggalPengeluaran ||
+      !keteranganPengeluaran ||
+      !nominalPengeluaran
+    ) {
+      alert("Form pengeluaran belum lengkap. Periksa index.html.");
+      return;
+    }
 
     const tanggal = tanggalPengeluaran.value;
     const keterangan = keteranganPengeluaran.value.trim();
@@ -618,6 +710,8 @@ if (formPengeluaran) {
       return;
     }
 
+    const sebelumnya = [...transaksiPengeluaran];
+
     transaksiPengeluaran.push({
       id: buatId(),
       tanggal,
@@ -625,15 +719,18 @@ if (formPengeluaran) {
       nominal
     });
 
-    simpanPengeluaran();
+    if (!simpanPengeluaran()) {
+      transaksiPengeluaran = sebelumnya;
+      return;
+    }
+
     formPengeluaran.reset();
     renderPengeluaran();
   });
 }
 
-
 /* =========================================
-   SIDEBAR - MENU AKTIF DAN NAVIGASI
+   SIDEBAR
 ========================================= */
 
 const menuSidebar = document.querySelectorAll(
@@ -660,9 +757,8 @@ menuSidebar.forEach(menu => {
 
 window.addEventListener("hashchange", updateSidebarActive);
 
-
 /* =========================================
-   TAMPILKAN DATA SAAT HALAMAN DIBUKA
+   TAMPILKAN SAAT HALAMAN DIBUKA
 ========================================= */
 
 tampilkanSiswa();
