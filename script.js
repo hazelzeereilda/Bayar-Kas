@@ -658,6 +658,7 @@ function renderPengeluaran() {
   perbaruiRingkasanKas();
 }
 
+
 function perbaruiRingkasanKas() {
   const total = transaksiPengeluaran.reduce(
     (jumlah, item) => jumlah + (Number(item.nominal) || 0),
@@ -665,7 +666,9 @@ function perbaruiRingkasanKas() {
   );
 
   const pemasukan = hitungTotalPemasukanSemuaMinggu();
+  const saldo = pemasukan - total;
 
+  // Ringkasan di Dashboard
   if (totalPengeluaran) {
     totalPengeluaran.textContent = formatRupiah(total);
   }
@@ -675,11 +678,63 @@ function perbaruiRingkasanKas() {
   }
 
   if (saldoDashboard) {
-    saldoDashboard.textContent = formatRupiah(pemasukan - total);
+    saldoDashboard.textContent = formatRupiah(saldo);
   }
 
   if (pemasukanDashboard) {
     pemasukanDashboard.textContent = formatRupiah(pemasukan);
+  }
+
+  // Ringkasan di halaman Laporan Kas
+  const laporanPemasukan = document.getElementById("laporan-pemasukan");
+  const laporanPengeluaran = document.getElementById("laporan-pengeluaran");
+  const laporanSaldo = document.getElementById("laporan-saldo");
+  const daftarLaporan = document.getElementById("daftar-laporan");
+
+  if (laporanPemasukan) {
+    laporanPemasukan.textContent = formatRupiah(pemasukan);
+  }
+
+  if (laporanPengeluaran) {
+    laporanPengeluaran.textContent = formatRupiah(total);
+  }
+
+  if (laporanSaldo) {
+    laporanSaldo.textContent = formatRupiah(saldo);
+  }
+
+  // Tampilkan daftar pengeluaran pada laporan
+  if (daftarLaporan) {
+    daftarLaporan.innerHTML = "";
+
+    if (transaksiPengeluaran.length === 0) {
+      const baris = document.createElement("tr");
+      const kolom = document.createElement("td");
+
+      kolom.colSpan = 4;
+      kolom.className = "empty-state";
+      kolom.textContent = "Belum ada data pengeluaran.";
+
+      baris.appendChild(kolom);
+      daftarLaporan.appendChild(baris);
+    } else {
+      transaksiPengeluaran.forEach((item, index) => {
+        const baris = document.createElement("tr");
+
+        [
+          index + 1,
+          item.tanggal,
+          item.keterangan,
+          formatRupiah(item.nominal)
+        ].forEach(teks => {
+          const kolom = document.createElement("td");
+          kolom.textContent = teks;
+          baris.appendChild(kolom);
+        });
+
+        daftarLaporan.appendChild(baris);
+      });
+    }
   }
 }
 
