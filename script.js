@@ -820,3 +820,73 @@ tampilkanSiswa();
 tampilkanPembayaran();
 renderPengeluaran();
 updateSidebarActive();
+
+function unduhLaporanCSV() {
+  const totalPemasukan = hitungTotalPemasukanSemuaMinggu();
+
+  const totalPengeluaran = transaksiPengeluaran.reduce(
+    (total, item) => total + Number(item.nominal || 0),
+    0
+  );
+
+  const saldoAkhir = totalPemasukan - totalPengeluaran;
+
+  function formatRupiah(nilai) {
+    return "Rp" + Number(nilai).toLocaleString("id-ID");
+  }
+
+  function amankanCSV(nilai) {
+    return '"' + String(nilai ?? "").replace(/"/g, '""') + '"';
+  }
+
+  const barisCSV = [
+    ["LAPORAN KAS KELAS"],
+    [],
+    ["Total Pemasukan", formatRupiah(totalPemasukan)],
+    ["Total Pengeluaran", formatRupiah(totalPengeluaran)],
+    ["Saldo Akhir", formatRupiah(saldoAkhir)],
+    [],
+    ["REKAP PENGELUARAN"],
+    ["No.", "Tanggal", "Keterangan", "Nominal"]
+  ];
+
+  transaksiPengeluaran.forEach((item, index) => {
+    barisCSV.push([
+      index + 1,
+      item.tanggal,
+      item.keterangan,
+      formatRupiah(item.nominal)
+    ]);
+  });
+
+  const isiCSV =
+    "\uFEFF" +
+    barisCSV
+      .map(baris => baris.map(amankanCSV).join(","))
+      .join("\r\n");
+
+  const file = new Blob([isiCSV], {
+    type: "text/csv;charset=utf-8;"
+  });
+
+  const url = URL.createObjectURL(file);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download =
+    "laporan-kas-" +
+    new Date().toISOString().slice(0, 10) +
+    ".csv";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+const tombolUnduhLaporan = document.getElementById("unduh-laporan");
+
+if (tombolUnduhLaporan) {
+  tombolUnduhLaporan.addEventListener("click", unduhLaporanCSV);
+}
