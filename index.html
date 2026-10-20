@@ -187,7 +187,7 @@
               </div>
         </article>
 
-        <article class="panel" id="laporan">
+        <article class="panel" id="informasi-kas">
           <div class="panel-heading">
             <div>
               <h3>Informasi Kas</h3>
@@ -358,6 +358,73 @@
             </table>
           </div>
         </section>
+      
+      <section class="panel transaction-panel" id="laporan">
+        <div class="panel-heading">
+          <div>
+            <h3>Laporan Kas</h3>
+            <p>Ringkasan pemasukan, pengeluaran, dan saldo kas kelas</p>
+          </div>
+          <span class="calendar-icon">▥</span>
+        </div>
+
+        <div class="summary-grid">
+          <article class="summary-card">
+            <div class="card-top">
+              <span>Total Pemasukan</span>
+              <span class="metric-icon light-blue">↓</span>
+            </div>
+            <h2 id="laporan-pemasukan">Rp0</h2>
+            <p>Uang kas yang terkumpul</p>
+          </article>
+
+          <article class="summary-card">
+            <div class="card-top">
+              <span>Total Pengeluaran</span>
+              <span class="metric-icon pale">↑</span>
+            </div>
+            <h2 id="laporan-pengeluaran">Rp0</h2>
+            <p>Uang kas yang digunakan</p>
+          </article>
+
+          <article class="summary-card">
+            <div class="card-top">
+              <span>Saldo Akhir</span>
+              <span class="metric-icon blue">Rp</span>
+            </div>
+            <h2 id="laporan-saldo">Rp0</h2>
+            <p>Pemasukan dikurangi pengeluaran</p>
+          </article>
+        </div>
+
+        <div class="panel-heading">
+          <div>
+            <h3>Rekap Pengeluaran</h3>
+            <p>Daftar transaksi pengeluaran kas kelas</p>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>No.</th>
+                <th>Tanggal</th>
+                <th>Keterangan</th>
+                <th>Nominal</th>
+              </tr>
+            </thead>
+            <tbody id="daftar-laporan">
+              <tr>
+                <td colspan="4" class="empty-state">
+                  Belum ada data pengeluaran.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <footer class="footer">
         KasKelas · Pengelolaan keuangan kelas
       </footer>
