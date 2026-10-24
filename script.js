@@ -890,3 +890,57 @@ const tombolUnduhLaporan = document.getElementById("unduh-laporan");
 if (tombolUnduhLaporan) {
   tombolUnduhLaporan.addEventListener("click", unduhLaporanCSV);
 }
+
+/* =========================================
+   LOGIN KASKELAS - DEMO SEMENTARA
+   ========================================= */
+
+// AKUN DEMO
+// Jangan gunakan password pribadi atau password Supabase.
+const DEMO_EMAIL = "bendahara@kaskelas.demo";
+const DEMO_PASSWORD = "KasKelas123!";
+
+// Ambil elemen login dari index.html
+const loginScreen = document.getElementById("login-screen");
+const loginForm = document.getElementById("login-form");
+const loginEmail = document.getElementById("login-email");
+const loginPassword = document.getElementById("login-password");
+const loginError = document.getElementById("login-error");
+const appContent = document.getElementById("app-content");
+
+// Jalankan jika elemen login tersedia
+if (
+  loginScreen &&
+  loginForm &&
+  loginEmail &&
+  loginPassword &&
+  loginError &&
+  appContent
+) {
+  // Sembunyikan dashboard sebelum login
+  appContent.style.display = "none";
+
+  // Proses ketika tombol Login ditekan
+  loginForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const email = loginEmail.value.trim().toLowerCase();
+    const password = loginPassword.value;
+
+    if (
+      email === DEMO_EMAIL &&
+      password === DEMO_PASSWORD
+    ) {
+      // Login berhasil
+      loginError.textContent = "";
+      loginScreen.style.display = "none";
+      appContent.style.display = "";
+
+    } else {
+      // Login gagal
+      loginError.textContent =
+        "Email atau password salah. Silakan coba lagi.";
+    }
+  });
+}
+
