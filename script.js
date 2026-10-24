@@ -897,8 +897,8 @@ if (tombolUnduhLaporan) {
 
 // AKUN DEMO
 // Jangan gunakan password pribadi atau password Supabase.
-const DEMO_EMAIL = "bendahara@kaskelas.demo";
-const DEMO_PASSWORD = "KasKelas123!";
+const DEMO_EMAIL = "diamonddream@710";
+const DEMO_PASSWORD = "markhyuck09";
 
 // Ambil elemen login dari index.html
 const loginScreen = document.getElementById("login-screen");
