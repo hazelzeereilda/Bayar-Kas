@@ -1954,3 +1954,70 @@ body.dark-mode .modal-close {
     max-width: 100%;
   }
 }
+
+/* =====================================
+   FIX PROFIL SIDEBAR AGAR TIDAK KEPOTONG
+   ===================================== */
+
+.sidebar {
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: visible;
+}
+
+.sidebar-bottom {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-bottom: 8px;
+}
+
+.sidebar-profile {
+  flex-shrink: 0;
+}
+
+.profile-trigger {
+  min-width: 0;
+}
+
+.profile-details {
+  overflow: hidden;
+}
+
+.profile-details strong,
+.profile-details small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Menu profil muncul di atas tombol profil */
+.profile-menu {
+  bottom: calc(100% + 8px);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+/* Tampilan layar kecil */
+@media (max-width: 650px) {
+  .sidebar {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .sidebar-bottom {
+    display: block;
+    margin-top: 16px;
+    padding: 14px 4px 8px;
+  }
+
+  .sidebar-profile {
+    margin-top: 12px;
+  }
+
+  .profile-menu {
+    top: auto;
+    bottom: calc(100% + 8px);
+  }
+}
