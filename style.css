@@ -1505,3 +1505,132 @@ td {
   }
 }
 
+/* =========================================
+   LOGIN KASKELAS
+   Tambahkan di bagian paling bawah style.css
+   ========================================= */
+
+.login-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #091540;
+  box-sizing: border-box;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 36px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #e5eaf5;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+}
+
+.login-box .brand-icon {
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: #1B2CC1;
+  color: #ffffff;
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.login-box h1 {
+  margin: 8px 0 0;
+  color: #091540;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.login-box > p:not(.login-error) {
+  margin: 0 0 12px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.login-box label {
+  color: #091540;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.login-box input {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  box-sizing: border-box;
+  border: 1px solid #d5dced;
+  border-radius: 10px;
+  outline: none;
+  background: #ffffff;
+  color: #091540;
+  font-family: inherit;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-box input:focus {
+  border-color: #1B2CC1;
+  box-shadow: 0 0 0 3px rgba(27, 44, 193, 0.12);
+}
+
+.login-box .login-error {
+  min-height: 18px;
+  margin: 0;
+  color: #dc2626;
+  font-size: 13px;
+}
+
+.login-box .student-button {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 4px;
+  border: none;
+  border-radius: 10px;
+  background: #1B2CC1;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.login-box .student-button:hover {
+  background: #091540;
+  transform: translateY(-1px);
+}
+
+.login-box .student-button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .login-screen {
+    padding: 18px;
+  }
+
+  .login-box {
+    padding: 28px 22px;
+    border-radius: 16px;
+  }
+
+  .login-box h1 {
+    font-size: 25px;
+  }
+}
+
