@@ -944,3 +944,162 @@ if (
   });
 }
 
+
+/* =====================================
+   PROFIL SIDEBAR, PENGATURAN, DAN LOGOUT
+   ===================================== */
+
+const akunProfileTrigger = document.getElementById("profile-trigger");
+const akunProfileMenu = document.getElementById("profile-menu");
+const akunMenuProfil = document.getElementById("menu-profil");
+const akunMenuPengaturan = document.getElementById("menu-pengaturan");
+const akunMenuKeluar = document.getElementById("menu-keluar");
+
+const akunModalProfil = document.getElementById("modal-profil");
+const akunModalPengaturan = document.getElementById("modal-pengaturan");
+const akunToggleDarkMode = document.getElementById("toggle-dark-mode");
+const akunEmailDisplay = document.getElementById("profile-email-display");
+
+// Buka dan tutup menu profil
+if (akunProfileTrigger && akunProfileMenu) {
+  akunProfileTrigger.addEventListener("click", function () {
+    const sedangTerbuka = !akunProfileMenu.hidden;
+
+    akunProfileMenu.hidden = sedangTerbuka;
+    akunProfileTrigger.setAttribute(
+      "aria-expanded",
+      String(!sedangTerbuka)
+    );
+  });
+}
+
+// Fungsi membuka popup
+function bukaModalAkun(modal) {
+  if (akunProfileMenu) {
+    akunProfileMenu.hidden = true;
+  }
+
+  if (akunProfileTrigger) {
+    akunProfileTrigger.setAttribute("aria-expanded", "false");
+  }
+
+  if (modal) {
+    modal.hidden = false;
+  }
+}
+
+// Tombol Profil
+if (akunMenuProfil) {
+  akunMenuProfil.addEventListener("click", function () {
+    if (akunEmailDisplay) {
+      akunEmailDisplay.textContent = "diamonddream@710";
+    }
+
+    bukaModalAkun(akunModalProfil);
+  });
+}
+
+// Tombol Pengaturan
+if (akunMenuPengaturan) {
+  akunMenuPengaturan.addEventListener("click", function () {
+    bukaModalAkun(akunModalPengaturan);
+  });
+}
+
+// Tutup popup lewat tombol X
+document.querySelectorAll("[data-close-modal]").forEach(function (tombol) {
+  tombol.addEventListener("click", function () {
+    const idModal = tombol.getAttribute("data-close-modal");
+    const modal = document.getElementById(idModal);
+
+    if (modal) {
+      modal.hidden = true;
+    }
+  });
+});
+
+// Tutup popup jika area luar kartu diklik
+[akunModalProfil, akunModalPengaturan].forEach(function (modal) {
+  if (modal) {
+    modal.addEventListener("click", function (event) {
+      if (event.target === modal) {
+        modal.hidden = true;
+      }
+    });
+  }
+});
+
+// Pengaturan mode gelap
+if (akunToggleDarkMode) {
+  akunToggleDarkMode.addEventListener("change", function () {
+    document.body.classList.toggle(
+      "dark-mode",
+      akunToggleDarkMode.checked
+    );
+
+    try {
+      localStorage.setItem(
+        "bayarKasDarkMode",
+        akunToggleDarkMode.checked ? "aktif" : "nonaktif"
+      );
+    } catch (error) {
+      console.warn("Pengaturan tampilan tidak dapat disimpan.");
+    }
+  });
+
+  try {
+    const modeTersimpan = localStorage.getItem("bayarKasDarkMode");
+    akunToggleDarkMode.checked = modeTersimpan === "aktif";
+
+    document.body.classList.toggle(
+      "dark-mode",
+      akunToggleDarkMode.checked
+    );
+  } catch (error) {
+    console.warn("Pengaturan tampilan tidak dapat dibaca.");
+  }
+}
+
+// Tombol Keluar
+if (akunMenuKeluar) {
+  akunMenuKeluar.addEventListener("click", function () {
+    const yakinKeluar = window.confirm(
+      "Yakin mau keluar dari KasKelas?"
+    );
+
+    if (!yakinKeluar) {
+      return;
+    }
+
+    if (akunProfileMenu) {
+      akunProfileMenu.hidden = true;
+    }
+
+    if (akunModalProfil) {
+      akunModalProfil.hidden = true;
+    }
+
+    if (akunModalPengaturan) {
+      akunModalPengaturan.hidden = true;
+    }
+
+    // Gunakan elemen login yang sudah dibuat oleh script sebelumnya.
+    if (
+      typeof loginScreen !== "undefined" &&
+      typeof appContent !== "undefined"
+    ) {
+      loginScreen.style.display = "flex";
+      appContent.style.display = "none";
+
+      if (typeof loginForm !== "undefined" && loginForm) {
+        loginForm.reset();
+      }
+
+      if (typeof loginError !== "undefined" && loginError) {
+        loginError.textContent = "";
+      }
+    } else {
+      window.alert("Elemen login tidak ditemukan. Periksa script login.");
+    }
+  });
+}
