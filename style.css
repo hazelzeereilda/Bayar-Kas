@@ -1634,3 +1634,323 @@ td {
   }
 }
 
+
+/* =====================================
+   PROFIL SIDEBAR DAN MENU AKUN
+   ===================================== */
+
+.sidebar-bottom {
+  position: relative;
+}
+
+.sidebar-profile {
+  position: relative;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(171, 210, 250, 0.18);
+}
+
+.profile-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #ffffff;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.profile-trigger:hover,
+.profile-trigger[aria-expanded="true"] {
+  background: #152653;
+}
+
+.profile-avatar,
+.account-avatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #ABD2FA;
+  color: #091540;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.profile-details {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-details strong {
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.profile-details small {
+  color: #ABD2FA;
+  font-size: 11px;
+}
+
+.profile-chevron {
+  color: #ABD2FA;
+  font-size: 18px;
+}
+
+.profile-menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 7px;
+  border: 1px solid rgba(171, 210, 250, 0.15);
+  border-radius: 12px;
+  background: #10204b;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.profile-menu[hidden],
+.account-modal[hidden] {
+  display: none !important;
+}
+
+.profile-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #ffffff;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-menu-item:hover {
+  background: #1B2CC1;
+}
+
+.profile-menu-item > span {
+  width: 18px;
+  text-align: center;
+}
+
+.profile-menu-item.logout-item {
+  color: #ff9a9a;
+}
+
+/* =====================================
+   POPUP PROFIL DAN PENGATURAN
+   ===================================== */
+
+.account-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(9, 21, 64, 0.62);
+  box-sizing: border-box;
+}
+
+.account-card {
+  position: relative;
+  width: 100%;
+  max-width: 390px;
+  padding: 28px;
+  border: 1px solid #e5eaf5;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #091540;
+  box-shadow: 0 20px 55px rgba(9, 21, 64, 0.2);
+  box-sizing: border-box;
+}
+
+.account-card h2 {
+  margin: 12px 0 6px;
+  color: #091540;
+  font-size: 23px;
+}
+
+.account-card > p {
+  margin: 0 0 20px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.account-card .account-avatar {
+  width: 54px;
+  height: 54px;
+  font-size: 21px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: #f1f5ff;
+  color: #091540;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  background: #e2eaff;
+}
+
+.account-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 0;
+  border-bottom: 1px solid #e5eaf5;
+}
+
+.account-info:last-child {
+  border-bottom: 0;
+}
+
+.account-info span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.account-info strong {
+  color: #091540;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.setting-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 0;
+  border-top: 1px solid #e5eaf5;
+}
+
+.setting-option > span {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.setting-option strong {
+  font-size: 14px;
+}
+
+.setting-option small {
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.setting-option input {
+  width: 18px;
+  height: 18px;
+  accent-color: #1B2CC1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* =====================================
+   MODE GELAP SEDERHANA
+   ===================================== */
+
+body.dark-mode {
+  background: #080f26;
+  color: #eaf0ff;
+}
+
+body.dark-mode .main-content {
+  background: #080f26;
+  color: #eaf0ff;
+}
+
+body.dark-mode .topbar h1,
+body.dark-mode .panel h3,
+body.dark-mode .summary-card h2,
+body.dark-mode .panel strong {
+  color: #eaf0ff;
+}
+
+body.dark-mode .panel,
+body.dark-mode .summary-card {
+  background: #111d3a;
+  border-color: #26365c;
+  color: #eaf0ff;
+}
+
+body.dark-mode .subtitle,
+body.dark-mode .panel p,
+body.dark-mode .summary-card p {
+  color: #a9b9dc;
+}
+
+body.dark-mode .panel th,
+body.dark-mode .panel td {
+  border-color: #26365c;
+}
+
+body.dark-mode .panel input,
+body.dark-mode .panel select {
+  background: #0b1530;
+  border-color: #33456d;
+  color: #eaf0ff;
+}
+
+body.dark-mode .account-card {
+  background: #111d3a;
+  border-color: #26365c;
+  color: #eaf0ff;
+}
+
+body.dark-mode .account-card h2,
+body.dark-mode .account-info strong,
+body.dark-mode .setting-option strong {
+  color: #eaf0ff;
+}
+
+body.dark-mode .account-info,
+body.dark-mode .setting-option {
+  border-color: #26365c;
+}
+
+body.dark-mode .modal-close {
+  background: #26365c;
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .account-card {
+    padding: 24px 20px;
+  }
+
+  .profile-menu {
+    max-width: 100%;
+  }
+}
