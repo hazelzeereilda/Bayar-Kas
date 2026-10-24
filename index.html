@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -8,7 +9,40 @@
   <script src="script.js" defer></script>
 </head>
 <body>
-  <div class="app">
+
+  <!-- HALAMAN LOGIN -->
+  <section id="login-screen" class="login-screen">
+    <form id="login-form" class="login-box">
+      <div class="brand-icon">K</div>
+      <h1>KasKelas</h1>
+      <p>Silakan login untuk melanjutkan</p>
+
+      <label for="login-email">Email</label>
+      <input
+        type="email"
+        id="login-email"
+        placeholder="Masukkan email"
+        required
+      >
+
+      <label for="login-password">Password</label>
+      <input
+        type="password"
+        id="login-password"
+        placeholder="Masukkan password"
+        required
+      >
+
+      <p id="login-error" class="login-error"></p>
+
+      <button type="submit" class="student-button">
+        Login
+      </button>
+    </form>
+  </section>
+
+  <!-- DASHBOARD -->
+  <div class="app" id="app-content">
 
     <aside class="sidebar">
       <a class="brand" href="#dashboard">
@@ -22,19 +56,19 @@
         <a class="nav-item active" href="#dashboard">
           <span class="nav-icon">⌂</span> Dashboard
         </a>
-      
+
         <a class="nav-item" href="#siswa">
           <span class="nav-icon">♙</span> Data Siswa
         </a>
-      
+
         <a class="nav-item" href="#pembayaran">
           <span class="nav-icon">▤</span> Pembayaran
         </a>
-      
+
         <a class="nav-item" href="#pengeluaran">
           <span class="nav-icon">↗</span> Pengeluaran
         </a>
-      
+
         <a class="nav-item" href="#laporan">
           <span class="nav-icon">▥</span> Laporan Kas
         </a>
@@ -47,12 +81,15 @@
     </aside>
 
     <main class="main-content" id="dashboard">
+
+      <!-- HEADER -->
       <header class="topbar">
         <div>
           <p class="eyebrow">KEUANGAN KELAS</p>
           <h1>Dashboard</h1>
           <p class="subtitle">Pantau keuangan kelas.</p>
         </div>
+
         <div class="profile">
           <div class="avatar">K</div>
           <div>
@@ -62,7 +99,9 @@
         </div>
       </header>
 
+      <!-- RINGKASAN KEUANGAN -->
       <section class="summary-grid">
+
         <article class="summary-card">
           <div class="card-top">
             <span>Total Saldo</span>
@@ -89,10 +128,14 @@
           <h2 id="total-pengeluaran-dashboard">Rp0</h2>
           <p>Akumulasi uang keluar</p>
         </article>
+
       </section>
 
+      <!-- PEMBAYARAN MINGGUAN -->
       <section class="content-grid">
+
         <article class="panel payment-panel" id="pembayaran">
+
           <div class="panel-heading">
             <div>
               <h3>Status Pembayaran</h3>
@@ -102,6 +145,7 @@
           </div>
 
           <div class="payment-summary">
+
             <div class="payment-number">
               <span class="status-dot paid-dot"></span>
               <div>
@@ -109,6 +153,7 @@
                 <span>Sudah bayar</span>
               </div>
             </div>
+
             <div class="payment-number">
               <span class="status-dot unpaid-dot"></span>
               <div>
@@ -116,78 +161,85 @@
                 <span>Belum bayar</span>
               </div>
             </div>
+
           </div>
 
           <div class="progress-track">
             <div class="progress-fill" id="progress-bayar"></div>
           </div>
+
           <p class="progress-caption" id="persentase-bayar">
             Belum ada data pembayaran
           </p>
-              <div class="weekly-payment-tools">
-                <h3>Kelola Kas Mingguan</h3>
-              
-                <div class="payment-form-row">
-                  <label for="pilih-minggu">Minggu pembayaran</label>
-                  <select id="pilih-minggu">
-                    <option value="1">Minggu ke-1</option>
-                    <option value="2">Minggu ke-2</option>
-                    <option value="3">Minggu ke-3</option>
-                    <option value="4">Minggu ke-4</option>
-                    <option value="5">Minggu ke-5</option>
-                    <option value="6">Minggu ke-6</option>
-                    <option value="7">Minggu ke-7</option>
-                    <option value="8">Minggu ke-8</option>
-                    <option value="9">Minggu ke-9</option>
-                    <option value="10">Minggu ke-10</option>
-                    <option value="11">Minggu ke-11</option>
-                    <option value="12">Minggu ke-12</option>
-                    <option value="13">Minggu ke-13</option>
-                    <option value="14">Minggu ke-14</option>
-                    <option value="15">Minggu ke-15</option>
-                    <option value="16">Minggu ke-16</option>
-                  </select>
-                </div>
-              
-                <div class="payment-form-row">
-                  <label for="nominal-kas">Nominal kas per siswa (Rp)</label>
-                  <input
-                    type="number"
-                    id="nominal-kas"
-                    min="0"
-                    step="1000"
-                    value="5000"
-                    placeholder="Contoh: 5000"
-                  />
-                </div>
-              
-                <div class="payment-table-wrap">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>No.</th>
-                        <th>NIM</th>
-                        <th>Nama Siswa</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                      </tr>
-                    </thead>
-                    <tbody id="daftar-pembayaran">
-                      <tr>
-                        <td colspan="5">Memuat data siswa...</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              
-                <p>
-                  Total uang terkumpul:
-                  <strong id="total-kas-minggu">Rp0</strong>
-                </p>
-              </div>
+
+          <div class="weekly-payment-tools">
+            <h3>Kelola Kas Mingguan</h3>
+
+            <div class="payment-form-row">
+              <label for="pilih-minggu">Minggu pembayaran</label>
+              <select id="pilih-minggu">
+                <option value="1">Minggu ke-1</option>
+                <option value="2">Minggu ke-2</option>
+                <option value="3">Minggu ke-3</option>
+                <option value="4">Minggu ke-4</option>
+                <option value="5">Minggu ke-5</option>
+                <option value="6">Minggu ke-6</option>
+                <option value="7">Minggu ke-7</option>
+                <option value="8">Minggu ke-8</option>
+                <option value="9">Minggu ke-9</option>
+                <option value="10">Minggu ke-10</option>
+                <option value="11">Minggu ke-11</option>
+                <option value="12">Minggu ke-12</option>
+                <option value="13">Minggu ke-13</option>
+                <option value="14">Minggu ke-14</option>
+                <option value="15">Minggu ke-15</option>
+                <option value="16">Minggu ke-16</option>
+              </select>
+            </div>
+
+            <div class="payment-form-row">
+              <label for="nominal-kas">Nominal kas per siswa (Rp)</label>
+              <input
+                type="number"
+                id="nominal-kas"
+                min="0"
+                step="1000"
+                value="5000"
+                placeholder="Contoh: 5000"
+              >
+            </div>
+
+            <div class="payment-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>NIM</th>
+                    <th>Nama Siswa</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+
+                <tbody id="daftar-pembayaran">
+                  <tr>
+                    <td colspan="5">Memuat data siswa...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p>
+              Total uang terkumpul:
+              <strong id="total-kas-minggu">Rp0</strong>
+            </p>
+
+          </div>
         </article>
 
+        <!-- INFORMASI KAS -->
         <article class="panel" id="informasi-kas">
+
           <div class="panel-heading">
             <div>
               <h3>Informasi Kas</h3>
@@ -195,22 +247,29 @@
             </div>
             <span class="calendar-icon">▦</span>
           </div>
+
           <div class="info-row">
             <span>Periode</span>
             <strong id="periode">Belum dimulai</strong>
           </div>
+
           <div class="info-row">
             <span>Jumlah siswa</span>
             <strong id="jumlah-siswa">0 siswa</strong>
           </div>
+
           <div class="info-row">
             <span>Status data</span>
             <span class="status-badge">Menunggu data</span>
           </div>
+
         </article>
+
       </section>
-      
+
+      <!-- PENGELUARAN -->
       <section class="panel transaction-panel" id="pengeluaran">
+
         <div class="panel-heading">
           <div>
             <h3>Pengeluaran Kas</h3>
@@ -218,13 +277,18 @@
           </div>
           <span class="read-only">Kelola Kas</span>
         </div>
-      
+
         <form id="form-pengeluaran" class="student-form">
+
           <div class="student-input">
             <label for="tanggal-pengeluaran">Tanggal</label>
-            <input type="date" id="tanggal-pengeluaran" required>
+            <input
+              type="date"
+              id="tanggal-pengeluaran"
+              required
+            >
           </div>
-      
+
           <div class="student-input">
             <label for="keterangan-pengeluaran">Keterangan</label>
             <input
@@ -234,7 +298,7 @@
               required
             >
           </div>
-      
+
           <div class="student-input">
             <label for="nominal-pengeluaran">Nominal (Rp)</label>
             <input
@@ -245,17 +309,18 @@
               required
             >
           </div>
-      
+
           <button type="submit" class="student-button">
             Simpan Pengeluaran
           </button>
+
         </form>
-      
+
         <div class="info-row">
           <span>Total Pengeluaran</span>
           <strong id="total-pengeluaran">Rp0</strong>
         </div>
-      
+
         <div class="table-wrap">
           <table>
             <thead>
@@ -267,6 +332,7 @@
                 <th>Aksi</th>
               </tr>
             </thead>
+
             <tbody id="daftar-pengeluaran">
               <tr>
                 <td colspan="5" class="empty-state">
@@ -276,90 +342,108 @@
             </tbody>
           </table>
         </div>
+
       </section>
 
-        <section class="panel students-panel" id="siswa">
-          <div class="panel-heading">
-            <div>
-              <h3>Data Siswa</h3>
-              <p>Kelola daftar siswa kelas</p>
-            </div>
-            <span class="read-only" id="total-siswa">0 siswa</span>
-          </div>
+      <!-- DATA SISWA -->
+      <section class="panel students-panel" id="siswa">
 
-          <form id="form-siswa" class="student-form">
-            <input type="hidden" id="id-siswa">
-        
-            <div class="student-input">
-              <label for="nim-siswa">NIM</label>
-              <input
-                type="text"
-                id="nim-siswa"
-                placeholder="Masukkan NIM"
-                required
-              >
-            </div>
-        
-            <div class="student-input">
-              <label for="nama-siswa">Nama siswa</label>
-              <input
-                type="text"
-                id="nama-siswa"
-                placeholder="Masukkan nama siswa"
-                required
-              >
-            </div>
-        
-            <div class="student-input">
-              <label for="kelas-siswa">Kelas</label>
-              <input
-                type="text"
-                id="kelas-siswa"
-                placeholder="Contoh: I26C"
-                required
-              >
-            </div>
-        
-            <button type="submit" class="student-button" id="tombol-simpan">
-              Tambah Siswa
-            </button>
-        
-            <button type="button" class="student-cancel" id="batal-edit" hidden>
-              Batal
-            </button>
-          </form>
-        
-          <div class="student-search">
+        <div class="panel-heading">
+          <div>
+            <h3>Data Siswa</h3>
+            <p>Kelola daftar siswa kelas</p>
+          </div>
+          <span class="read-only" id="total-siswa">0 siswa</span>
+        </div>
+
+        <form id="form-siswa" class="student-form">
+
+          <input type="hidden" id="id-siswa">
+
+          <div class="student-input">
+            <label for="nim-siswa">NIM</label>
             <input
-              type="search"
-              id="cari-siswa"
-              placeholder="Cari NIM, nama, atau kelas..."
+              type="text"
+              id="nim-siswa"
+              placeholder="Masukkan NIM"
+              required
             >
           </div>
-        
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>NO.</th>
-                  <th>NIM</th>
-                  <th>NAMA SISWA</th>
-                  <th>KELAS</th>
-                  <th>AKSI</th>
-                </tr>
-              </thead>
-              <tbody id="daftar-siswa">
-                <tr>
-                  <td colspan="5" class="empty-state">
-                    Belum ada data siswa.
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+
+          <div class="student-input">
+            <label for="nama-siswa">Nama siswa</label>
+            <input
+              type="text"
+              id="nama-siswa"
+              placeholder="Masukkan nama siswa"
+              required
+            >
           </div>
-        </section>
-      
+
+          <div class="student-input">
+            <label for="kelas-siswa">Kelas</label>
+            <input
+              type="text"
+              id="kelas-siswa"
+              placeholder="Contoh: I26C"
+              required
+            >
+          </div>
+
+          <button
+            type="submit"
+            class="student-button"
+            id="tombol-simpan"
+          >
+            Tambah Siswa
+          </button>
+
+          <button
+            type="button"
+            class="student-cancel"
+            id="batal-edit"
+            hidden
+          >
+            Batal
+          </button>
+
+        </form>
+
+        <div class="student-search">
+          <input
+            type="search"
+            id="cari-siswa"
+            placeholder="Cari NIM, nama, atau kelas..."
+          >
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>NO.</th>
+                <th>NIM</th>
+                <th>NAMA SISWA</th>
+                <th>KELAS</th>
+                <th>AKSI</th>
+              </tr>
+            </thead>
+
+            <tbody id="daftar-siswa">
+              <tr>
+                <td colspan="5" class="empty-state">
+                  Belum ada data siswa.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- LAPORAN KAS -->
       <section class="panel transaction-panel" id="laporan">
+
         <div class="panel-heading">
           <div>
             <h3>Laporan Kas</h3>
@@ -369,6 +453,7 @@
         </div>
 
         <div class="summary-grid">
+
           <article class="summary-card">
             <div class="card-top">
               <span>Total Pemasukan</span>
@@ -395,14 +480,20 @@
             <h2 id="laporan-saldo">Rp0</h2>
             <p>Pemasukan dikurangi pengeluaran</p>
           </article>
+
         </div>
-        
+
         <div class="panel-heading">
           <div>
             <h3>Rekap Pengeluaran</h3>
             <p>Daftar transaksi pengeluaran kas kelas</p>
           </div>
-          <button type="button" class="student-button" id="unduh-laporan">
+
+          <button
+            type="button"
+            class="student-button"
+            id="unduh-laporan"
+          >
             Unduh Laporan CSV
           </button>
         </div>
@@ -417,6 +508,7 @@
                 <th>Nominal</th>
               </tr>
             </thead>
+
             <tbody id="daftar-laporan">
               <tr>
                 <td colspan="4" class="empty-state">
@@ -426,12 +518,15 @@
             </tbody>
           </table>
         </div>
+
       </section>
 
       <footer class="footer">
         KasKelas · Pengelolaan keuangan kelas
       </footer>
+
     </main>
   </div>
+
 </body>
 </html>
